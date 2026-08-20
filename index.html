@@ -12,41 +12,112 @@
     <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
+
+    <!-- ============================================ -->
+    <!-- LOADING / SPLASH SCREEN                       -->
+    <!-- ============================================ -->
+    <div id="screen-loading" class="screen active">
+        <div class="loading-content">
+            <div class="loading-logo-wrap">
+                <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#5BA3A3"/>
+                            <stop offset="100%" stop-color="#B5E5E5"/>
+                        </linearGradient>
+                        <linearGradient id="secondaryGrad" x1="100%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#D4A06A"/>
+                            <stop offset="100%" stop-color="#FBDDB9"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M 75 35 C 75 15, 25 15, 25 35 C 25 45, 45 50, 50 50" stroke="url(#primaryGrad)" stroke-linecap="round" stroke-width="14"/>
+                    <polygon fill="#7EC8C8" points="75,20 90,35 60,35"/>
+                    <path d="M 25 65 C 25 85, 75 85, 75 65 C 75 55, 55 50, 50 50" stroke="url(#secondaryGrad)" stroke-linecap="round" stroke-width="14"/>
+                    <polygon fill="#F5C28A" points="25,80 10,65 40,65"/>
+                </svg>
+                <div class="loading-spinner"></div>
+            </div>
+            <span class="loading-text">SkillSwap</span>
+            <div class="loading-dots">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- OFFLINE / SLOW INTERNET OVERLAY               -->
+    <!-- ============================================ -->
+    <div class="offline-overlay" id="offline-overlay">
+        <div class="offline-content">
+            <div class="offline-icon">
+                <div class="offline-wave"></div>
+                <div class="offline-wave"></div>
+                <div class="offline-wave"></div>
+                <span class="material-symbols-outlined">wifi_off</span>
+            </div>
+            <h2 class="offline-title">No Connection</h2>
+            <p class="offline-text">It looks like you're offline or have a slow connection. We'll reconnect automatically when your internet is back.</p>
+            <div class="offline-retry-bar">
+                <div class="offline-retry-progress"></div>
+            </div>
+            <button class="btn-primary btn-lg" id="btn-retry-connection">
+                <span class="material-symbols-outlined">refresh</span>
+                <span>Retry Connection</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- 404 NOT FOUND SCREEN                          -->
+    <!-- ============================================ -->
+    <div id="screen-404" class="screen">
+        <div class="error-404-content">
+            <div class="error-404-glass-orb">
+                <span class="material-symbols-outlined">explore_off</span>
+            </div>
+            <div class="error-404-number">404</div>
+            <h2 class="error-404-title">Page Not Found</h2>
+            <p class="error-404-text">Oops! The skill you're looking for might have been swapped away. Let's get you back on track.</p>
+            <button class="btn-primary btn-lg" id="btn-404-home">
+                <span class="material-symbols-outlined">home</span>
+                <span>Go Home</span>
+            </button>
+        </div>
+    </div>
+
     <!-- ============================================ -->
     <!-- SPLASH / ONBOARDING SCREEN                    -->
     <!-- ============================================ -->
-    <div id="screen-onboarding" class="screen active">
+    <div id="screen-onboarding" class="screen">
         <div class="onboarding-bg">
             <div class="orb orb-1"></div>
             <div class="orb orb-2"></div>
             <div class="orb orb-3"></div>
         </div>
         <div class="onboarding-content">
-            <!-- Logo -->
             <div class="logo-container">
                 <svg class="logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <defs>
-                        <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#0d7377"/>
-                            <stop offset="100%" stop-color="#4db8a9"/>
+                        <linearGradient id="primaryGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#5BA3A3"/>
+                            <stop offset="100%" stop-color="#B5E5E5"/>
                         </linearGradient>
-                        <linearGradient id="secondaryGrad" x1="100%" y1="100%" x2="0%" y2="0%">
-                            <stop offset="0%" stop-color="#d4860b"/>
-                            <stop offset="100%" stop-color="#ffd599"/>
+                        <linearGradient id="secondaryGrad2" x1="100%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#D4A06A"/>
+                            <stop offset="100%" stop-color="#FBDDB9"/>
                         </linearGradient>
                     </defs>
-                    <path d="M 75 35 C 75 15, 25 15, 25 35 C 25 45, 45 50, 50 50" stroke="url(#primaryGrad)" stroke-linecap="round" stroke-width="14"/>
-                    <polygon fill="#0d7377" points="75,20 90,35 60,35"/>
-                    <path d="M 25 65 C 25 85, 75 85, 75 65 C 75 55, 55 50, 50 50" stroke="url(#secondaryGrad)" stroke-linecap="round" stroke-width="14"/>
-                    <polygon fill="#d4860b" points="25,80 10,65 40,65"/>
+                    <path d="M 75 35 C 75 15, 25 15, 25 35 C 25 45, 45 50, 50 50" stroke="url(#primaryGrad2)" stroke-linecap="round" stroke-width="14"/>
+                    <polygon fill="#7EC8C8" points="75,20 90,35 60,35"/>
+                    <path d="M 25 65 C 25 85, 75 85, 75 65 C 75 55, 55 50, 50 50" stroke="url(#secondaryGrad2)" stroke-linecap="round" stroke-width="14"/>
+                    <polygon fill="#F5C28A" points="25,80 10,65 40,65"/>
                 </svg>
                 <div class="logo-glow"></div>
             </div>
             <h1 class="onboarding-title">SkillSwap</h1>
             <p class="onboarding-subtitle">THE KINETIC EXCHANGE</p>
             <p class="onboarding-tagline">Everyone has something to teach.<br/>Everyone has something to learn.</p>
-            
-            <!-- Onboarding Cards -->
+
             <div class="onboarding-cards" id="onboarding-cards">
                 <div class="onboarding-card active" data-step="0">
                     <span class="material-symbols-outlined onboarding-card-icon" style="font-variation-settings: 'FILL' 1;">diversity_3</span>
@@ -82,62 +153,54 @@
     <!-- ============================================ -->
     <div id="screen-signup" class="screen">
         <div class="screen-header">
-            <button class="btn-icon" id="signup-back">
+            <button class="btn-icon" id="signup-back" aria-label="Go back">
                 <span class="material-symbols-outlined">arrow_back</span>
             </button>
-            <h2 class="screen-title">Create Account</h2>
+            <h2 class="screen-title" id="auth-title">Create Account</h2>
             <div style="width:40px"></div>
         </div>
         <div class="screen-body">
             <div class="signup-form">
-                <div class="form-group">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-input" id="signup-name" placeholder="Enter your full name" value="Priya Sharma"/>
+                <div class="form-group" id="signup-name-group">
+                    <label class="form-label" for="signup-name">Full Name</label>
+                    <input type="text" class="form-input" id="signup-name" placeholder="Enter your full name" autocomplete="name"/>
+                    <p class="form-error-msg" id="error-name">Please enter your full name</p>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Email or Phone</label>
-                    <input type="text" class="form-input" id="signup-email" placeholder="email@example.com or +1..." value="priya@example.com"/>
+                    <label class="form-label" for="signup-email">Email</label>
+                    <input type="email" class="form-input" id="signup-email" placeholder="email@example.com" autocomplete="email"/>
+                    <p class="form-error-msg" id="error-email">Please enter a valid email address</p>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Password</label>
+                    <label class="form-label" for="signup-password">Password</label>
                     <div class="input-with-icon">
-                        <input type="password" class="form-input" id="signup-password" placeholder="Create a strong password" value="••••••••"/>
-                        <button class="input-icon-btn">
+                        <input type="password" class="form-input" id="signup-password" placeholder="Create a strong password" autocomplete="new-password"/>
+                        <button class="input-icon-btn" id="toggle-password" aria-label="Toggle password visibility">
                             <span class="material-symbols-outlined">visibility_off</span>
                         </button>
                     </div>
+                    <p class="form-error-msg" id="error-password">Password must be at least 6 characters</p>
                 </div>
-                
-                <!-- OTP Section -->
-                <div class="otp-section" id="otp-section" style="display:none;">
-                    <p class="otp-text">We sent a verification code to your email</p>
-                    <div class="otp-inputs">
-                        <input type="text" maxlength="1" class="otp-input" value="4"/>
-                        <input type="text" maxlength="1" class="otp-input" value="7"/>
-                        <input type="text" maxlength="1" class="otp-input" value="2"/>
-                        <input type="text" maxlength="1" class="otp-input" value="9"/>
-                    </div>
-                    <p class="otp-resend">Didn't get a code? <a href="#">Resend</a></p>
-                </div>
-                
+
                 <button class="btn-primary btn-lg btn-full" id="btn-signup-next">
                     <span>Continue</span>
                     <span class="material-symbols-outlined">arrow_forward</span>
                 </button>
-                
+
                 <div class="divider-text">
                     <span>or continue with</span>
                 </div>
                 <div class="social-buttons">
-                    <button class="btn-social">
+                    <button class="btn-social" id="btn-google-auth">
                         <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
                         <span>Google</span>
                     </button>
-                    <button class="btn-social">
+                    <button class="btn-social" id="btn-apple-auth">
                         <svg width="20" height="20" viewBox="0 0 24 24"><path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.18 0-.36-.02-.53-.06.02-.17.04-.36.04-.55 0-1.12.535-2.22 1.235-3.02.75-.85 2.08-1.54 2.94-1.57.04.18.06.35.06.55h-.585zm3.59 17.58c-.63.97-1.33 1.87-2.38 1.89-1 .02-1.35-.6-2.5-.6-1.15 0-1.55.58-2.5.62-1.03.04-1.8-1.01-2.45-1.97-1.28-1.93-2.28-5.45-.95-7.82.63-1.17 1.8-1.93 3.04-1.95 1-.02 1.94.66 2.5.66.56 0 1.63-.82 2.78-.7.47.02 1.79.19 2.64 1.42-.07.04-1.57.91-1.55 2.73.02 2.17 1.93 2.9 1.95 2.91-.02.06-.3 1.03-.98 2.04l.4-.23z" fill="#333"/></svg>
                         <span>Apple</span>
                     </button>
                 </div>
+                <p class="onboarding-signin" id="auth-switch-copy">Already have an account? <a href="#" id="btn-auth-switch">Sign In</a></p>
             </div>
         </div>
     </div>
@@ -147,7 +210,7 @@
     <!-- ============================================ -->
     <div id="screen-profile-setup" class="screen">
         <div class="screen-header">
-            <button class="btn-icon" id="profile-setup-back">
+            <button class="btn-icon" id="profile-setup-back" aria-label="Go back">
                 <span class="material-symbols-outlined">arrow_back</span>
             </button>
             <h2 class="screen-title">Set Up Profile</h2>
@@ -155,25 +218,24 @@
         </div>
         <div class="screen-body">
             <div class="profile-setup-form">
-                <!-- Photo Upload -->
                 <div class="photo-upload-area">
                     <div class="photo-placeholder" id="profile-photo-preview">
                         <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0vTl-ZT49a-ZH115FiYOjys9ynOWzT_yZTbDMVD0aZ2awDCC5K5yLjO8rmWFKX7zkqJTec89XNfUksRxrhMGuDwIYkuUtOYio45sUiJFhfkun5zarRwEgL5lT8pkbEh8cLnbzHoZk_mjsW39soWXuJzz2F6cCpUsBARK2v0PUv1Wic6sNSguALjWVAElw1AZQudRGpy5bVyo0sFdIBYmySXVcsrvLQcAprYlW3yyb6g6yINcKQutD5mEJBUmip0ds2Kwa_9cXcoM" alt="Profile photo"/>
                     </div>
-                    <button class="btn-photo-edit">
+                    <button class="btn-photo-edit" aria-label="Change photo">
                         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
                     </button>
                 </div>
-                
+
                 <div class="form-group">
-                    <label class="form-label">Short Bio</label>
-                    <textarea class="form-textarea" placeholder="Tell people about yourself..." rows="3">Passionate about design and always looking to learn new creative skills. I believe in the power of community learning!</textarea>
+                    <label class="form-label" for="setup-bio">Short Bio</label>
+                    <textarea class="form-textarea" id="setup-bio" placeholder="Tell people about yourself..." rows="3"></textarea>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">City / Neighborhood</label>
+                    <label class="form-label" for="setup-location">City / Neighborhood</label>
                     <div class="input-with-icon">
                         <span class="material-symbols-outlined input-icon-left">location_on</span>
-                        <input type="text" class="form-input has-icon-left" placeholder="e.g. Brooklyn, NY" value="Brooklyn, NY"/>
+                        <input type="text" class="form-input has-icon-left" id="setup-location" placeholder="e.g. Brooklyn, NY"/>
                     </div>
                 </div>
 
@@ -187,25 +249,10 @@
                             </h3>
                             <p class="skills-section-subtitle">Add up to 10 skills you can share</p>
                         </div>
-                        <span class="skills-count">3/10</span>
+                        <span class="skills-count" id="teach-count">0/10</span>
                     </div>
                     <div class="skills-chips" id="teach-skills">
-                        <div class="skill-chip skill-chip-teach">
-                            <span>Graphic Design</span>
-                            <span class="skill-level">Expert</span>
-                            <button class="chip-remove">×</button>
-                        </div>
-                        <div class="skill-chip skill-chip-teach">
-                            <span>Illustration</span>
-                            <span class="skill-level">Intermediate</span>
-                            <button class="chip-remove">×</button>
-                        </div>
-                        <div class="skill-chip skill-chip-teach">
-                            <span>UI Design</span>
-                            <span class="skill-level">Expert</span>
-                            <button class="chip-remove">×</button>
-                        </div>
-                        <button class="btn-add-skill">
+                        <button class="btn-add-skill" id="btn-add-teach-skill">
                             <span class="material-symbols-outlined">add</span>
                             Add Skill
                         </button>
@@ -222,18 +269,10 @@
                             </h3>
                             <p class="skills-section-subtitle">What would you like to learn?</p>
                         </div>
-                        <span class="skills-count">2/10</span>
+                        <span class="skills-count" id="learn-count">0/10</span>
                     </div>
                     <div class="skills-chips" id="learn-skills">
-                        <div class="skill-chip skill-chip-learn">
-                            <span>Photography</span>
-                            <button class="chip-remove">×</button>
-                        </div>
-                        <div class="skill-chip skill-chip-learn">
-                            <span>Guitar</span>
-                            <button class="chip-remove">×</button>
-                        </div>
-                        <button class="btn-add-skill">
+                        <button class="btn-add-skill" id="btn-add-learn-skill">
                             <span class="material-symbols-outlined">add</span>
                             Add Skill
                         </button>
@@ -249,9 +288,45 @@
     </div>
 
     <!-- ============================================ -->
-    <!-- MAIN APP SHELL (with bottom nav)              -->
+    <!-- MAIN APP SHELL                                -->
     <!-- ============================================ -->
     <div id="screen-app" class="screen">
+
+        <!-- Desktop Sidebar (hidden on mobile) -->
+        <aside class="desktop-sidebar" id="desktop-sidebar">
+            <div class="sidebar-logo">SkillSwap</div>
+            <nav class="sidebar-nav">
+                <button class="sidebar-nav-item active" data-tab="home">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+                    <span>Home</span>
+                </button>
+                <button class="sidebar-nav-item" data-tab="discover">
+                    <span class="material-symbols-outlined">explore</span>
+                    <span>Discover</span>
+                </button>
+                <button class="sidebar-nav-item" data-tab="swaps">
+                    <span class="material-symbols-outlined">swap_horiz</span>
+                    <span>My Swaps</span>
+                    <span class="sidebar-badge">2</span>
+                </button>
+                <button class="sidebar-nav-item" data-tab="collaborate">
+                    <span class="material-symbols-outlined">video_call</span>
+                    <span>Collaborate</span>
+                </button>
+                <button class="sidebar-nav-item" data-tab="profile">
+                    <span class="material-symbols-outlined">person</span>
+                    <span>Profile</span>
+                </button>
+            </nav>
+            <div class="sidebar-profile" id="sidebar-profile">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0vTl-ZT49a-ZH115FiYOjys9ynOWzT_yZTbDMVD0aZ2awDCC5K5yLjO8rmWFKX7zkqJTec89XNfUksRxrhMGuDwIYkuUtOYio45sUiJFhfkun5zarRwEgL5lT8pkbEh8cLnbzHoZk_mjsW39soWXuJzz2F6cCpUsBARK2v0PUv1Wic6sNSguALjWVAElw1AZQudRGpy5bVyo0sFdIBYmySXVcsrvLQcAprYlW3yyb6g6yINcKQutD5mEJBUmip0ds2Kwa_9cXcoM" alt="Profile"/>
+                <div class="sidebar-profile-info">
+                    <h4 id="sidebar-user-name">Guest User</h4>
+                    <p>Brooklyn, NY</p>
+                </div>
+            </div>
+        </aside>
+
         <!-- Top App Bar -->
         <header class="app-header" id="app-header">
             <div class="app-header-left">
@@ -261,9 +336,9 @@
                 <h1 class="app-logo">SkillSwap</h1>
             </div>
             <div class="app-header-right">
-                <button class="btn-icon" id="btn-notifications">
+                <button class="btn-icon" id="btn-notifications" aria-label="Notifications">
                     <span class="material-symbols-outlined">notifications</span>
-                    <span class="notification-badge">3</span>
+                    <span class="notification-badge" id="notif-badge">3</span>
                 </button>
             </div>
         </header>
@@ -278,8 +353,7 @@
                     <p class="section-subtext">Kinetic exchanges tailored for you. Swipe, connect, and start learning today.</p>
                 </section>
 
-                <!-- Find My Match Button -->
-                <button class="btn-match-finder" id="btn-find-match">
+                <button class="btn-match-finder" id="btn-find-match" aria-label="Find My Match">
                     <div class="match-finder-glow"></div>
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
                     <span>Find My Match</span>
@@ -288,7 +362,7 @@
                 <!-- Hot Swaps Section -->
                 <section class="hot-swaps">
                     <h3 class="section-title-sm">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; color: var(--error);">local_fire_department</span>
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; color: var(--tertiary);">local_fire_department</span>
                         Hot Swaps Near You
                     </h3>
                     <div class="hot-swaps-scroll">
@@ -316,8 +390,7 @@
                 </section>
 
                 <!-- Match Cards Feed -->
-                <section class="match-feed">
-                    <!-- Match Card 1 - Maya -->
+                <section class="match-feed" id="match-feed">
                     <article class="match-card" id="match-card-maya">
                         <div class="card-bg-decor card-bg-decor-right"></div>
                         <div class="match-card-header">
@@ -359,14 +432,13 @@
                                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified_user</span>
                                 <span>4.6</span>
                             </div>
-                            <button class="btn-secondary" onclick="navigateToTab('swaps')">
+                            <button class="btn-secondary" id="btn-view-maya">
                                 View Profile
                                 <span class="material-symbols-outlined">arrow_forward</span>
                             </button>
                         </div>
                     </article>
 
-                    <!-- Match Card 2 - Alex -->
                     <article class="match-card match-card-alt" id="match-card-alex">
                         <div class="card-bg-decor card-bg-decor-left"></div>
                         <div class="match-card-header">
@@ -415,7 +487,6 @@
                         </div>
                     </article>
 
-                    <!-- Match Card 3 - Liam -->
                     <article class="match-card" id="match-card-liam">
                         <div class="card-bg-decor card-bg-decor-right"></div>
                         <div class="match-card-header">
@@ -457,7 +528,7 @@
                                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified_user</span>
                                 <span>4.2</span>
                             </div>
-                            <button class="btn-secondary">
+                            <button class="btn-secondary" id="btn-view-liam">
                                 View Profile
                                 <span class="material-symbols-outlined">arrow_forward</span>
                             </button>
@@ -468,48 +539,27 @@
 
             <!-- ===== DISCOVER TAB ===== -->
             <div class="tab-content" id="tab-discover">
-                <!-- Search Bar -->
                 <div class="discover-search">
                     <span class="material-symbols-outlined">search</span>
-                    <input type="text" placeholder="Search skills, people, or categories..." class="discover-search-input"/>
-                    <button class="btn-filter">
+                    <input type="text" placeholder="Search skills, people, or categories..." class="discover-search-input" id="discover-search-input" aria-label="Search"/>
+                    <button class="btn-filter" id="btn-filter-toggle" aria-label="Toggle filters">
                         <span class="material-symbols-outlined">tune</span>
                     </button>
                 </div>
 
-                <!-- Filter Pills -->
-                <div class="filter-pills">
+                <div class="filter-pills" id="filter-pills">
                     <button class="filter-pill active">All</button>
-                    <button class="filter-pill">
-                        <span class="material-symbols-outlined" style="font-size:16px;">computer</span> Tech
-                    </button>
-                    <button class="filter-pill">
-                        <span class="material-symbols-outlined" style="font-size:16px;">music_note</span> Music
-                    </button>
-                    <button class="filter-pill">
-                        <span class="material-symbols-outlined" style="font-size:16px;">translate</span> Languages
-                    </button>
-                    <button class="filter-pill">
-                        <span class="material-symbols-outlined" style="font-size:16px;">restaurant</span> Cooking
-                    </button>
-                    <button class="filter-pill">
-                        <span class="material-symbols-outlined" style="font-size:16px;">fitness_center</span> Fitness
-                    </button>
-                    <button class="filter-pill">
-                        <span class="material-symbols-outlined" style="font-size:16px;">brush</span> Art
-                    </button>
-                    <button class="filter-pill">
-                        <span class="material-symbols-outlined" style="font-size:16px;">business</span> Business
-                    </button>
-                    <button class="filter-pill">
-                        <span class="material-symbols-outlined" style="font-size:16px;">build</span> DIY
-                    </button>
-                    <button class="filter-pill">
-                        <span class="material-symbols-outlined" style="font-size:16px;">school</span> Academic
-                    </button>
+                    <button class="filter-pill"><span class="material-symbols-outlined" style="font-size:16px;">computer</span> Tech</button>
+                    <button class="filter-pill"><span class="material-symbols-outlined" style="font-size:16px;">music_note</span> Music</button>
+                    <button class="filter-pill"><span class="material-symbols-outlined" style="font-size:16px;">translate</span> Languages</button>
+                    <button class="filter-pill"><span class="material-symbols-outlined" style="font-size:16px;">restaurant</span> Cooking</button>
+                    <button class="filter-pill"><span class="material-symbols-outlined" style="font-size:16px;">fitness_center</span> Fitness</button>
+                    <button class="filter-pill"><span class="material-symbols-outlined" style="font-size:16px;">brush</span> Art</button>
+                    <button class="filter-pill"><span class="material-symbols-outlined" style="font-size:16px;">business</span> Business</button>
+                    <button class="filter-pill"><span class="material-symbols-outlined" style="font-size:16px;">build</span> DIY</button>
+                    <button class="filter-pill"><span class="material-symbols-outlined" style="font-size:16px;">school</span> Academic</button>
                 </div>
 
-                <!-- Filter Controls -->
                 <div class="filter-controls">
                     <div class="filter-control">
                         <span class="material-symbols-outlined" style="font-size: 18px;">location_on</span>
@@ -528,14 +578,26 @@
                     </div>
                 </div>
 
+                <!-- Search No Results (hidden by default) -->
+                <div class="empty-state" id="search-no-results">
+                    <div class="empty-state-icon">
+                        <span class="material-symbols-outlined">search_off</span>
+                    </div>
+                    <h3 class="empty-state-title">No Results Found</h3>
+                    <p class="empty-state-text">We couldn't find anyone matching your search. Try different keywords or broaden your filters.</p>
+                    <button class="btn-outline" id="btn-clear-search">
+                        <span class="material-symbols-outlined">backspace</span>
+                        Clear Search
+                    </button>
+                </div>
+
                 <!-- Map View -->
-                <div class="discover-map">
+                <div class="discover-map" id="discover-map-view">
                     <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCccS9OyD3So7GabeWX1Eopof8YfMAO5BkEWsZAdvUKqEYJ0Bjm9kmVqfEBe2HMQNKDgorZ1_wJuYW2KYggxPecr1a0GkvmyTx1dijG1_1HEipzKv1SaR8W4OMdikiVaZLA5m2qT1rSfS1wNTiHYZ-KXFm4WRoQux5_3E1XbHmVHtpwR17pjrsgh5vYsSVDVMGnosE9ptJVmVSsGDZJTeiLJt822xPKjh_Z0_CgY8yV-IziyQ6eqv0a4nlwNQwhRlH19k1h5l0pPw4" alt="Map view" class="map-background"/>
                     <div class="map-overlay"></div>
-                    
-                    <!-- Map Pins -->
+
                     <div class="map-pin" style="top: 35%; left: 40%;">
-                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV3jVe3LDATmZaJuelWKJB3okDxDbC9fykp0WJQZfcvjXWcPvd6WKNnqdTCLYP0gCi5jOQoeyjTIJVjKkOPZG47GFNSBiiNMsCI_cgNCuw4D4dFyFPoAARxzI9gZSLv45366Fslboi_-g0gi7RWEEq262rdoCsR6QuUWTK_ehfZHatTxemoZLGkvS14PHF7Yx4a3S_w0H8uZd56ZBba8jogdntsDUoJh3HGGEcD2qVaegWwjqqTLEcaeaGXS_McRC9NYbi5sM27Rc" alt="Alex R."/>
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV3jVe3LDATmZaJuelWKJB3okDxDbC9fykp0WJQZfcvjXWcPvd6WKNnqdTCLYP0gCi5jOQoeyjTIJVjKkOPZG47GFNSBiiNMsCI_cgNCuw4D4dFyFPoAARxzI9gZSLv45366Fslboi_-g0gi7RWEEq262rdoCsR6QuUWTK_ehfZHatTxemoZLGkvS14PHF7Yx4a3S_w0H8uZd56ZBba8jogdntsDUoJh3HGGEcD2qVaegWwjqqTLEcaeaGXS_McRC9NYbi5sM27Rc" alt="Liam"/>
                         <div class="map-pin-pulse"></div>
                     </div>
                     <div class="map-pin" style="top: 55%; left: 60%;">
@@ -547,7 +609,6 @@
                         <div class="map-pin-pulse"></div>
                     </div>
 
-                    <!-- Floating Profile Card on Map -->
                     <div class="map-profile-card">
                         <div class="map-trust-badge">
                             <div class="trust-icon-wrap">
@@ -563,20 +624,19 @@
                                 <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV3jVe3LDATmZaJuelWKJB3okDxDbC9fykp0WJQZfcvjXWcPvd6WKNnqdTCLYP0gCi5jOQoeyjTIJVjKkOPZG47GFNSBiiNMsCI_cgNCuw4D4dFyFPoAARxzI9gZSLv45366Fslboi_-g0gi7RWEEq262rdoCsR6QuUWTK_ehfZHatTxemoZLGkvS14PHF7Yx4a3S_w0H8uZd56ZBba8jogdntsDUoJh3HGGEcD2qVaegWwjqqTLEcaeaGXS_McRC9NYbi5sM27Rc" alt="Alex R."/>
                                 <div>
                                     <h4>Alex R.</h4>
-                                    <p>Guitar & Theory</p>
+                                    <p>Guitar &amp; Theory</p>
                                 </div>
                             </div>
                             <div class="map-card-tags">
                                 <span class="tag-neutral">Spanish</span>
                                 <span class="tag-offering">Offering</span>
                             </div>
-                            <button class="btn-primary btn-full btn-sm">Connect Now</button>
+                            <button class="btn-primary btn-full btn-sm" id="btn-map-connect">Connect Now</button>
                         </div>
                         <div class="map-pin-connector"></div>
                         <div class="map-pin-dot"></div>
                     </div>
 
-                    <!-- Location Tag -->
                     <div class="map-location-tag">
                         <span class="material-symbols-outlined" style="font-size:14px;">location_on</span>
                         The Coffee Bean
@@ -591,32 +651,29 @@
                     <p class="section-subtext">Track all your skill exchanges in one place.</p>
                 </section>
 
-                <!-- Swap Status Tabs -->
                 <div class="swap-status-tabs">
                     <button class="swap-tab active" data-status="pending">
                         Pending
-                        <span class="swap-tab-badge">2</span>
+                        <span class="swap-tab-badge" id="pending-badge">2</span>
                     </button>
                     <button class="swap-tab" data-status="active">Active</button>
                     <button class="swap-tab" data-status="completed">Completed</button>
                 </div>
 
-                <!-- Safety Banner -->
                 <div class="safety-banner" id="safety-banner">
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; color: var(--secondary);">shield</span>
                     <div>
                         <p class="safety-title">Safety First!</p>
                         <p class="safety-text">Always meet in a public place. Share your location with a friend. Trust your instincts.</p>
                     </div>
-                    <button class="btn-icon-sm" id="dismiss-safety">
+                    <button class="btn-icon-sm" id="dismiss-safety" aria-label="Dismiss">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>
 
                 <!-- Swap Cards -->
-                <div class="swap-cards">
-                    <!-- Pending Swap 1 -->
-                    <div class="swap-card">
+                <div class="swap-cards" id="swap-cards-container">
+                    <div class="swap-card" data-swap-status="pending">
                         <div class="swap-card-header">
                             <div class="swap-users">
                                 <img class="swap-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDRWjSdTiOY93brimJm1XDXIqW3YOcqsmgTZvjTYUYOQUy0jue2Ihx3hy7cKUO_whAIM_OhM-sD__OTOMl87CMsHtGOG-Ph9JbuGERbDMT4ohjXAuRNx22fC0uLnNutsrhGPtAYcJQQMCnvXGhqDu03_KynprWLOY_uvUAmf7gLHfUm_-BwweP3kSxCNsX338nRBE0aAmb9FiucO7xwjaG71TMDQiI02RPD-8J1642TMKbp-L41vL3QYzwEM58PDyDCTIpMNhKRbI" alt="Alex"/>
@@ -651,7 +708,7 @@
                             </div>
                         </div>
                         <div class="swap-actions">
-                            <button class="btn-outline">Decline</button>
+                            <button class="btn-outline" id="btn-decline-swap-1">Decline</button>
                             <button class="btn-primary" id="btn-accept-swap">
                                 <span>Accept</span>
                                 <span class="material-symbols-outlined">check</span>
@@ -659,8 +716,7 @@
                         </div>
                     </div>
 
-                    <!-- Pending Swap 2 -->
-                    <div class="swap-card">
+                    <div class="swap-card" data-swap-status="pending">
                         <div class="swap-card-header">
                             <div class="swap-users">
                                 <img class="swap-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQRB_UZeMNC8ggKC4gl3lynMsMOwu9oExTBKhpYZOShCixYC8_vIdRbjEKH-C9sB-tkFgu34L5fzlGjowJULhpJKAywqC462xqZhGdPKcOJy_Yuh5HUVeIsIUs72blXi-MtWZakUBuuiQ8gbQxb6SLmopkK5aJh0WR12KHusvAhYF-SPLWVUNA6awKN_XP0iyzdWKl3sbmUj3T5pDdLFaL9iKkkWecxX_QiOXvkKBMIJnj5gkw27sq60f5P79QcTvWr6wuzArAYLc" alt="Maya"/>
@@ -695,16 +751,16 @@
                             </div>
                         </div>
                         <div class="swap-actions">
-                            <button class="btn-outline">Decline</button>
-                            <button class="btn-primary">
+                            <button class="btn-outline" id="btn-decline-swap-2">Decline</button>
+                            <button class="btn-primary" id="btn-accept-swap-2">
                                 <span>Accept</span>
                                 <span class="material-symbols-outlined">check</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Chat / Messaging thread preview -->
-                    <div class="swap-card swap-card-active" style="display:none;" id="active-swap-card">
+                    <!-- Active Swap Card (hidden by default) -->
+                    <div class="swap-card swap-card-active" style="display:none;" id="active-swap-card" data-swap-status="active">
                         <div class="swap-card-header">
                             <div class="swap-users">
                                 <img class="swap-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDRWjSdTiOY93brimJm1XDXIqW3YOcqsmgTZvjTYUYOQUy0jue2Ihx3hy7cKUO_whAIM_OhM-sD__OTOMl87CMsHtGOG-Ph9JbuGERbDMT4ohjXAuRNx22fC0uLnNutsrhGPtAYcJQQMCnvXGhqDu03_KynprWLOY_uvUAmf7gLHfUm_-BwweP3kSxCNsX338nRBE0aAmb9FiucO7xwjaG71TMDQiI02RPD-8J1642TMKbp-L41vL3QYzwEM58PDyDCTIpMNhKRbI" alt="Alex"/>
@@ -718,36 +774,48 @@
                         <div class="swap-proposal">
                             <div class="swap-side">
                                 <p class="swap-side-label">Alex teaches</p>
-                                <p class="swap-side-skill">Guitar</p>
+                                <p class="swap-side-skill">Guitar Basics</p>
                             </div>
                             <div class="swap-exchange-icon">
                                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">swap_horiz</span>
                             </div>
                             <div class="swap-side">
                                 <p class="swap-side-label">You teach</p>
-                                <p class="swap-side-skill">Design</p>
+                                <p class="swap-side-skill">Graphic Design</p>
                             </div>
                         </div>
-                        <!-- Mini Chat Preview -->
                         <div class="chat-preview">
-                            <div class="chat-message chat-message-other">
+                            <div class="chat-message">
                                 <img class="chat-msg-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDRWjSdTiOY93brimJm1XDXIqW3YOcqsmgTZvjTYUYOQUy0jue2Ihx3hy7cKUO_whAIM_OhM-sD__OTOMl87CMsHtGOG-Ph9JbuGERbDMT4ohjXAuRNx22fC0uLnNutsrhGPtAYcJQQMCnvXGhqDu03_KynprWLOY_uvUAmf7gLHfUm_-BwweP3kSxCNsX338nRBE0aAmb9FiucO7xwjaG71TMDQiI02RPD-8J1642TMKbp-L41vL3QYzwEM58PDyDCTIpMNhKRbI" alt="Alex"/>
-                                <div class="chat-bubble chat-bubble-other">Hey! Ready for our Guitar ↔ Design session tomorrow? 🎸</div>
+                                <div class="chat-bubble chat-bubble-other">Hey! Ready for our first session? I've got my guitar tuned up 🎸</div>
                             </div>
                             <div class="chat-message chat-message-self">
-                                <div class="chat-bubble chat-bubble-self">Absolutely! I've prepared some design fundamentals to share. See you at 3! 🎨</div>
+                                <div class="chat-bubble chat-bubble-self">Yes! I've prepared some design exercises too. See you at 3! 🎨</div>
                             </div>
                         </div>
                         <div class="swap-actions">
-                            <button class="btn-outline" onclick="navigateToTab('collaborate')">
-                                <span class="material-symbols-outlined">videocam</span>
-                                Start Call
+                            <button class="btn-outline" id="btn-message-swap">
+                                <span class="material-symbols-outlined" style="font-size:18px;">chat</span>
+                                Message
                             </button>
-                            <button class="btn-primary btn-success">
-                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            <button class="btn-primary btn-success" id="btn-complete-swap">
                                 <span>Mark Complete</span>
+                                <span class="material-symbols-outlined">check_circle</span>
                             </button>
                         </div>
+                    </div>
+
+                    <!-- Empty state for completed -->
+                    <div class="empty-state" id="swaps-empty-state">
+                        <div class="empty-state-icon">
+                            <span class="material-symbols-outlined">swap_horiz</span>
+                        </div>
+                        <h3 class="empty-state-title">No Swaps Yet</h3>
+                        <p class="empty-state-text">Start by finding a match on the Home tab. Your skill exchanges will appear here.</p>
+                        <button class="btn-primary" id="btn-find-swap">
+                            <span class="material-symbols-outlined">bolt</span>
+                            Find a Match
+                        </button>
                     </div>
                 </div>
             </div>
@@ -755,71 +823,65 @@
             <!-- ===== COLLABORATE TAB ===== -->
             <div class="tab-content" id="tab-collaborate">
                 <div class="collaborate-screen">
-                    <!-- Video Area -->
+                    <div class="session-timer">
+                        <div class="timer-dot"></div>
+                        <span id="session-time">12:34</span>
+                    </div>
                     <div class="video-container">
                         <div class="video-main">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbi1jqjZiq6o2FOfa1e_rK-Yp_yFN0EN2fh-pQY88SjdKq_T6IM4fZhP0FJPZqJ8Mu07sYanPGWHCa4wEktianyVdrF86j824maYbXz06tl6iD1hkYbTwnlQi6vFIkRtIR8jpPljLffXdPG0AczXWUc6UvoE7RMqig5ZWaZe_pDnpdq603UJHcfW4RrD0tmALfNxBvjHamtdot7X3ZYBUlExFGqYYqs_Kex2vaF2csA000dfZw7eXZjhKbT4dRy3ymv2gu0bzOH-o" alt="Remote video - Alex cooking" class="video-feed"/>
+                            <img class="video-feed" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDRWjSdTiOY93brimJm1XDXIqW3YOcqsmgTZvjTYUYOQUy0jue2Ihx3hy7cKUO_whAIM_OhM-sD__OTOMl87CMsHtGOG-Ph9JbuGERbDMT4ohjXAuRNx22fC0uLnNutsrhGPtAYcJQQMCnvXGhqDu03_KynprWLOY_uvUAmf7gLHfUm_-BwweP3kSxCNsX338nRBE0aAmb9FiucO7xwjaG71TMDQiI02RPD-8J1642TMKbp-L41vL3QYzwEM58PDyDCTIpMNhKRbI" alt="Remote participant"/>
                             <div class="video-gradient-overlay"></div>
                             <div class="video-user-badge">
-                                <img class="video-badge-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkSL3jkq9XN5Q-clib5e40b4p9vsjczryyyXEFwmGqgP_4Yx2Qq_Zf3L2lmjghiBnEQySss8DcVSNYlLW-LXwmmAHDV_8aNn7ZQhrpjDgk-FnR730foU2qnNRkn4SLy3BUyGtWtOvx6PRDA-ueveVYrkmVFi0OR2ebCEkiML4_7wQ0Ij4UKB8NFqEcfT09ai0HZhyYmINJoyJETRph4PrWjI5a-Wj_iW4HjVQuSPI7gQO-R-EGGZPITNWqcO0IaOXFjU2BSpI4cAg" alt="Alex"/>
-                                <span>Alex (Host)</span>
-                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; font-size: 16px;">mic</span>
+                                <img class="video-badge-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDRWjSdTiOY93brimJm1XDXIqW3YOcqsmgTZvjTYUYOQUy0jue2Ihx3hy7cKUO_whAIM_OhM-sD__OTOMl87CMsHtGOG-Ph9JbuGERbDMT4ohjXAuRNx22fC0uLnNutsrhGPtAYcJQQMCnvXGhqDu03_KynprWLOY_uvUAmf7gLHfUm_-BwweP3kSxCNsX338nRBE0aAmb9FiucO7xwjaG71TMDQiI02RPD-8J1642TMKbp-L41vL3QYzwEM58PDyDCTIpMNhKRbI" alt="Alex"/>
+                                <span>Alex — Guitar Teacher</span>
                             </div>
                         </div>
                         <div class="video-self">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdq_zEhmV6oVizGBCZa4OwVIvn9jw_NrUy_7HVdf7gx7nzIPtggXY_pbp-hLrbW718z-RHUObdqaKdHG6GSIkUqZ9SeYQYLl6lqfqH4-OtFcvt6ro3Lp5XqeI1fA1ACpheSzRfuWiUjAiTyhlSZmRWO0IUBkcd6MrIol7WAwuPPMIaHA2wQ3fKIrqx-si6lMtvzUtuh5vcU7ustLOq6Wk4x-_ENqVmLlLjHbOoumEOEt2a6O_zFW1ifV5ZCt_H8FpU-pduHYrG1Yk" alt="You" class="video-feed"/>
-                            <div class="video-gradient-overlay"></div>
-                            <div class="self-label">You</div>
+                            <img class="video-feed" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0vTl-ZT49a-ZH115FiYOjys9ynOWzT_yZTbDMVD0aZ2awDCC5K5yLjO8rmWFKX7zkqJTec89XNfUksRxrhMGuDwIYkuUtOYio45sUiJFhfkun5zarRwEgL5lT8pkbEh8cLnbzHoZk_mjsW39soWXuJzz2F6cCpUsBARK2v0PUv1Wic6sNSguALjWVAElw1AZQudRGpy5bVyo0sFdIBYmySXVcsrvLQcAprYlW3yyb6g6yINcKQutD5mEJBUmip0ds2Kwa_9cXcoM" alt="You"/>
+                            <span class="self-label">You</span>
                         </div>
                     </div>
 
-                    <!-- Session Timer -->
-                    <div class="session-timer">
-                        <div class="timer-dot"></div>
-                        <span>12:45</span>
-                    </div>
-
-                    <!-- Side Tools -->
                     <div class="side-tools">
-                        <button class="side-tool-btn" id="btn-chat-tool">
-                            <span class="material-symbols-outlined">chat_bubble</span>
-                            <span class="tool-badge">2</span>
-                        </button>
-                        <button class="side-tool-btn" id="btn-whiteboard-tool">
+                        <button class="side-tool-btn" id="btn-whiteboard-tool" aria-label="Whiteboard">
                             <span class="material-symbols-outlined">draw</span>
                         </button>
+                        <button class="side-tool-btn" aria-label="Screen share">
+                            <span class="material-symbols-outlined">screen_share</span>
+                        </button>
+                        <button class="side-tool-btn" aria-label="Chat">
+                            <span class="material-symbols-outlined">chat</span>
+                            <span class="tool-badge">3</span>
+                        </button>
                     </div>
 
-                    <!-- Top Controls -->
                     <div class="video-top-controls">
-                        <button class="video-ctrl-btn">
-                            <span class="material-symbols-outlined">flip_camera_ios</span>
+                        <button class="video-ctrl-btn" aria-label="Maximize">
+                            <span class="material-symbols-outlined">open_in_full</span>
                         </button>
-                        <button class="video-ctrl-btn">
+                        <button class="video-ctrl-btn" aria-label="More options">
                             <span class="material-symbols-outlined">more_vert</span>
                         </button>
                     </div>
 
-                    <!-- Bottom Controls -->
                     <div class="video-bottom-controls">
                         <div class="video-controls-dock">
-                            <button class="dock-btn">
+                            <button class="dock-btn" aria-label="Microphone">
                                 <span class="material-symbols-outlined">mic</span>
                             </button>
-                            <button class="dock-btn">
+                            <button class="dock-btn" aria-label="Camera">
                                 <span class="material-symbols-outlined">videocam</span>
                             </button>
-                            <button class="dock-btn dock-btn-end">
+                            <button class="dock-btn dock-btn-end" aria-label="End call">
                                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">call_end</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Whiteboard Overlay (Hidden by default) -->
                     <div class="whiteboard-overlay" id="whiteboard-overlay" style="display:none;">
                         <div class="whiteboard-header">
                             <h3>Whiteboard</h3>
-                            <button class="btn-icon-sm" id="close-whiteboard">
+                            <button class="btn-icon-sm" id="close-whiteboard" aria-label="Close whiteboard">
                                 <span class="material-symbols-outlined">close</span>
                             </button>
                         </div>
@@ -851,25 +913,23 @@
             <!-- ===== PROFILE TAB ===== -->
             <div class="tab-content" id="tab-profile">
                 <div class="profile-page">
-                    <!-- Profile Header -->
                     <div class="profile-header-card">
                         <div class="profile-header-bg"></div>
                         <div class="profile-avatar-section">
                             <div class="profile-avatar-wrapper">
-                                <img class="profile-avatar-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0vTl-ZT49a-ZH115FiYOjys9ynOWzT_yZTbDMVD0aZ2awDCC5K5yLjO8rmWFKX7zkqJTec89XNfUksRxrhMGuDwIYkuUtOYio45sUiJFhfkun5zarRwEgL5lT8pkbEh8cLnbzHoZk_mjsW39soWXuJzz2F6cCpUsBARK2v0PUv1Wic6sNSguALjWVAElw1AZQudRGpy5bVyo0sFdIBYmySXVcsrvLQcAprYlW3yyb6g6yINcKQutD5mEJBUmip0ds2Kwa_9cXcoM" alt="Priya Sharma"/>
+                                <img class="profile-avatar-img" id="profile-avatar-display" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0vTl-ZT49a-ZH115FiYOjys9ynOWzT_yZTbDMVD0aZ2awDCC5K5yLjO8rmWFKX7zkqJTec89XNfUksRxrhMGuDwIYkuUtOYio45sUiJFhfkun5zarRwEgL5lT8pkbEh8cLnbzHoZk_mjsW39soWXuJzz2F6cCpUsBARK2v0PUv1Wic6sNSguALjWVAElw1AZQudRGpy5bVyo0sFdIBYmySXVcsrvLQcAprYlW3yyb6g6yINcKQutD5mEJBUmip0ds2Kwa_9cXcoM" alt="Your profile"/>
                                 <div class="profile-verified-badge">
                                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified</span>
                                 </div>
                             </div>
-                            <h2 class="profile-name">Priya Sharma</h2>
+                            <h2 class="profile-name" id="profile-display-name">Guest User</h2>
                             <p class="profile-location">
                                 <span class="material-symbols-outlined">location_on</span>
-                                Brooklyn, NY
+                                <span id="profile-display-location">Brooklyn, NY</span>
                             </p>
-                            <p class="profile-bio">Passionate about design and always looking to learn new creative skills. I believe in the power of community learning!</p>
+                            <p class="profile-bio" id="profile-display-bio">Complete your profile to start swapping skills!</p>
                         </div>
 
-                        <!-- Trust Score Card -->
                         <div class="trust-score-card">
                             <div class="trust-shield">
                                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified_user</span>
@@ -879,98 +939,57 @@
                                 <span class="trust-score-label">Trust Score</span>
                             </div>
                             <div class="trust-stars">
-                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; color: #FFC107;">star</span>
-                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; color: #FFC107;">star</span>
-                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; color: #FFC107;">star</span>
-                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; color: #FFC107;">star</span>
-                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0.5; color: #FFC107;">star_half</span>
+                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; color: var(--secondary);">star</span>
+                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; color: var(--secondary);">star</span>
+                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; color: var(--secondary);">star</span>
+                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; color: var(--secondary);">star</span>
+                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0.5; color: var(--secondary);">star_half</span>
                             </div>
                         </div>
 
-                        <!-- Stats -->
                         <div class="profile-stats">
                             <div class="stat">
-                                <span class="stat-number">12</span>
+                                <span class="stat-number" id="stat-swaps">0</span>
                                 <span class="stat-label">Swaps Done</span>
                             </div>
                             <div class="stat-divider"></div>
                             <div class="stat">
-                                <span class="stat-number">8</span>
+                                <span class="stat-number" id="stat-taught">0</span>
                                 <span class="stat-label">Skills Taught</span>
                             </div>
                             <div class="stat-divider"></div>
                             <div class="stat">
-                                <span class="stat-number">6</span>
+                                <span class="stat-number" id="stat-learned">0</span>
                                 <span class="stat-label">Skills Learned</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Skills Tabs -->
                     <div class="profile-skills-tabs">
                         <button class="profile-skill-tab active" data-tab="teach">Skills I Teach</button>
                         <button class="profile-skill-tab" data-tab="learn">Skills I'm Learning</button>
                     </div>
 
-                    <!-- Teaching Skills List -->
                     <div class="profile-skills-list" id="profile-teach-skills">
-                        <div class="profile-skill-item">
-                            <div class="profile-skill-icon" style="background: linear-gradient(135deg, var(--primary), var(--primary-container));">
-                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">brush</span>
+                        <div class="empty-state active" id="teach-empty">
+                            <div class="empty-state-icon">
+                                <span class="material-symbols-outlined">school</span>
                             </div>
-                            <div class="profile-skill-info">
-                                <h4>Graphic Design</h4>
-                                <p>Logo, branding, and visual identity design</p>
-                            </div>
-                            <span class="proficiency-badge proficiency-expert">Expert</span>
-                        </div>
-                        <div class="profile-skill-item">
-                            <div class="profile-skill-icon" style="background: linear-gradient(135deg, var(--secondary), var(--secondary-fixed));">
-                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">draw</span>
-                            </div>
-                            <div class="profile-skill-info">
-                                <h4>Illustration</h4>
-                                <p>Digital and hand-drawn illustration</p>
-                            </div>
-                            <span class="proficiency-badge proficiency-intermediate">Intermediate</span>
-                        </div>
-                        <div class="profile-skill-item">
-                            <div class="profile-skill-icon" style="background: linear-gradient(135deg, var(--tertiary), var(--tertiary-container));">
-                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">devices</span>
-                            </div>
-                            <div class="profile-skill-info">
-                                <h4>UI Design</h4>
-                                <p>Mobile and web interface design</p>
-                            </div>
-                            <span class="proficiency-badge proficiency-expert">Expert</span>
+                            <h3 class="empty-state-title">No Teaching Skills Yet</h3>
+                            <p class="empty-state-text">Add skills you can teach during profile setup.</p>
                         </div>
                     </div>
 
-                    <!-- Learning Skills List (hidden by default) -->
                     <div class="profile-skills-list" id="profile-learn-skills" style="display:none;">
-                        <div class="profile-skill-item">
-                            <div class="profile-skill-icon" style="background: linear-gradient(135deg, var(--secondary), var(--secondary-fixed));">
-                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
+                        <div class="empty-state active" id="learn-empty">
+                            <div class="empty-state-icon">
+                                <span class="material-symbols-outlined">auto_stories</span>
                             </div>
-                            <div class="profile-skill-info">
-                                <h4>Photography</h4>
-                                <p>Portrait and landscape photography</p>
-                            </div>
-                            <span class="proficiency-badge proficiency-beginner">Beginner</span>
-                        </div>
-                        <div class="profile-skill-item">
-                            <div class="profile-skill-icon" style="background: linear-gradient(135deg, var(--primary), var(--primary-container));">
-                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">music_note</span>
-                            </div>
-                            <div class="profile-skill-info">
-                                <h4>Guitar</h4>
-                                <p>Acoustic guitar basics and chords</p>
-                            </div>
-                            <span class="proficiency-badge proficiency-beginner">Beginner</span>
+                            <h3 class="empty-state-title">No Learning Goals Yet</h3>
+                            <p class="empty-state-text">Add skills you want to learn during profile setup.</p>
                         </div>
                     </div>
 
-                    <!-- Reviews Section -->
                     <div class="reviews-section">
                         <h3 class="section-title-sm">
                             <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">rate_review</span>
@@ -991,7 +1010,7 @@
                                 </div>
                                 <span class="review-date">2 days ago</span>
                             </div>
-                            <p class="review-text">"Priya is an amazing design teacher! She broke down complex concepts into easy steps. Highly recommend swapping with her."</p>
+                            <p class="review-text">"Amazing design teacher! Broke down complex concepts into easy steps. Highly recommend swapping with them."</p>
                             <div class="review-tags">
                                 <span class="review-tag tag-positive">Patient Teacher</span>
                                 <span class="review-tag tag-positive">Clear Communicator</span>
@@ -1012,7 +1031,7 @@
                                 </div>
                                 <span class="review-date">1 week ago</span>
                             </div>
-                            <p class="review-text">"Great session on UI fundamentals. Priya knows her stuff and is very patient with beginners."</p>
+                            <p class="review-text">"Great session on UI fundamentals. Very knowledgeable and patient with beginners."</p>
                             <div class="review-tags">
                                 <span class="review-tag tag-positive">Knowledgeable</span>
                                 <span class="review-tag tag-positive">Well Prepared</span>
@@ -1020,25 +1039,24 @@
                         </div>
                     </div>
 
-                    <!-- Profile Actions -->
                     <div class="profile-actions">
-                        <button class="profile-action-btn">
+                        <button class="profile-action-btn" id="btn-edit-profile">
                             <span class="material-symbols-outlined">edit</span>
                             <span>Edit Profile</span>
                         </button>
-                        <button class="profile-action-btn">
+                        <button class="profile-action-btn" id="btn-profile-notifications">
                             <span class="material-symbols-outlined">notifications</span>
                             <span>Notifications</span>
                         </button>
-                        <button class="profile-action-btn">
+                        <button class="profile-action-btn" id="btn-community-guidelines">
                             <span class="material-symbols-outlined">gavel</span>
                             <span>Community Guidelines</span>
                         </button>
-                        <button class="profile-action-btn">
+                        <button class="profile-action-btn" id="btn-report-issue">
                             <span class="material-symbols-outlined">flag</span>
                             <span>Report an Issue</span>
                         </button>
-                        <button class="profile-action-btn profile-action-danger">
+                        <button class="profile-action-btn profile-action-danger" id="btn-sign-out">
                             <span class="material-symbols-outlined">logout</span>
                             <span>Sign Out</span>
                         </button>
@@ -1049,24 +1067,24 @@
 
         <!-- Bottom Navigation Bar -->
         <nav class="bottom-nav" id="bottom-nav">
-            <button class="nav-tab active" data-tab="home" id="nav-home">
+            <button class="nav-tab active" data-tab="home" id="nav-home" aria-label="Home">
                 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
                 <span class="nav-label">Home</span>
             </button>
-            <button class="nav-tab" data-tab="discover" id="nav-discover">
+            <button class="nav-tab" data-tab="discover" id="nav-discover" aria-label="Discover">
                 <span class="material-symbols-outlined">explore</span>
                 <span class="nav-label">Discover</span>
             </button>
-            <button class="nav-tab" data-tab="swaps" id="nav-swaps">
+            <button class="nav-tab" data-tab="swaps" id="nav-swaps" aria-label="My Swaps">
                 <span class="material-symbols-outlined">swap_horiz</span>
                 <span class="nav-label">Swaps</span>
                 <span class="nav-badge">2</span>
             </button>
-            <button class="nav-tab" data-tab="collaborate" id="nav-collaborate">
+            <button class="nav-tab" data-tab="collaborate" id="nav-collaborate" aria-label="Collaborate">
                 <span class="material-symbols-outlined">video_call</span>
                 <span class="nav-label">Collab</span>
             </button>
-            <button class="nav-tab" data-tab="profile" id="nav-profile">
+            <button class="nav-tab" data-tab="profile" id="nav-profile" aria-label="Profile">
                 <span class="material-symbols-outlined">person</span>
                 <span class="nav-label">Profile</span>
             </button>
@@ -1079,7 +1097,7 @@
     <div class="modal-overlay" id="match-modal" style="display:none;">
         <div class="modal-card match-modal-card">
             <div class="match-modal-glow"></div>
-            <button class="modal-close" id="close-match-modal">
+            <button class="modal-close" id="close-match-modal" aria-label="Close">
                 <span class="material-symbols-outlined">close</span>
             </button>
             <div class="match-modal-header">
@@ -1096,7 +1114,7 @@
                 <div class="match-modal-score">
                     <div class="score-circle">
                         <svg viewBox="0 0 100 100">
-                            <circle cx="50" cy="50" r="45" fill="none" stroke="var(--surface-container)" stroke-width="8"/>
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(200,215,240,0.3)" stroke-width="8"/>
                             <circle cx="50" cy="50" r="45" fill="none" stroke="url(#primaryGrad)" stroke-width="8" stroke-dasharray="266" stroke-dashoffset="16" stroke-linecap="round" transform="rotate(-90 50 50)"/>
                         </svg>
                         <span class="score-number">94%</span>
@@ -1115,7 +1133,7 @@
                 <span>2.3 km away</span>
             </div>
             <div class="match-modal-actions">
-                <textarea class="form-textarea match-message" placeholder="Send a message with your swap request..." rows="2">Hey Alex! I'd love to trade design skills for guitar lessons. I'm free this weekend!</textarea>
+                <textarea class="form-textarea match-message" id="swap-request-message" placeholder="Send a message with your swap request..." rows="2">Hey Alex! I'd love to trade design skills for guitar lessons. I'm free this weekend!</textarea>
                 <button class="btn-primary btn-lg btn-full" id="btn-send-swap-request">
                     <span>Send Swap Request</span>
                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
@@ -1129,7 +1147,7 @@
     <!-- ============================================ -->
     <div class="modal-overlay" id="rating-modal" style="display:none;">
         <div class="modal-card rating-modal-card">
-            <button class="modal-close" id="close-rating-modal">
+            <button class="modal-close" id="close-rating-modal" aria-label="Close">
                 <span class="material-symbols-outlined">close</span>
             </button>
             <h3 class="rating-title">How was your session with Alex?</h3>
@@ -1140,7 +1158,7 @@
                 <span class="material-symbols-outlined rating-star" data-rating="4" style="font-variation-settings: 'FILL' 1;">star</span>
                 <span class="material-symbols-outlined rating-star" data-rating="5" style="font-variation-settings: 'FILL' 0;">star</span>
             </div>
-            <textarea class="form-textarea" placeholder="Write a review (optional)..." rows="3"></textarea>
+            <textarea class="form-textarea" id="rating-review-text" placeholder="Write a review (optional)..." rows="3"></textarea>
             <div class="rating-tags">
                 <button class="rating-tag active">Patient Teacher</button>
                 <button class="rating-tag">Clear Communicator</button>
@@ -1148,13 +1166,22 @@
                 <button class="rating-tag">Well Prepared</button>
                 <button class="rating-tag tag-negative">No-Show</button>
             </div>
-            <button class="btn-primary btn-lg btn-full">
+            <button class="btn-primary btn-lg btn-full" id="btn-submit-review">
                 <span>Submit Review</span>
                 <span class="material-symbols-outlined">check</span>
             </button>
         </div>
     </div>
 
+    <!-- ============================================ -->
+    <!-- TOAST NOTIFICATION                            -->
+    <!-- ============================================ -->
+    <div class="toast" id="toast-notification">
+        <span id="toast-message">Action completed!</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.0/dist/umd/supabase.js"></script>
+    <script src="supabase-config.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
