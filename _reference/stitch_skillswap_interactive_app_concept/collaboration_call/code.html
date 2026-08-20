@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SkillSwap - Collaboration Call</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e6deff",
+                        "primary": "#4647d3",
+                        "on-error": "#ffefef",
+                        "primary-fixed": "#9396ff",
+                        "primary-fixed-dim": "#8387ff",
+                        "background": "#faf4ff",
+                        "inverse-on-surface": "#a097c5",
+                        "surface": "#faf4ff",
+                        "tertiary-dim": "#a20030",
+                        "on-primary-container": "#0a0081",
+                        "on-secondary-fixed": "#003a45",
+                        "surface-container": "#ece4ff",
+                        "primary-container": "#9396ff",
+                        "on-tertiary-container": "#68001b",
+                        "secondary": "#006576",
+                        "secondary-fixed": "#65e1ff",
+                        "outline-variant": "#b0a7d6",
+                        "secondary-fixed-dim": "#48d4f3",
+                        "inverse-surface": "#0f072e",
+                        "on-tertiary": "#ffefef",
+                        "error-dim": "#a70138",
+                        "surface-container-low": "#f4eeff",
+                        "on-secondary-container": "#004f5d",
+                        "on-secondary": "#def7ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#d8ceff",
+                        "surface-tint": "#4647d3",
+                        "error": "#b41340",
+                        "on-surface": "#302950",
+                        "secondary-container": "#65e1ff",
+                        "primary-dim": "#3939c7",
+                        "on-primary-fixed-variant": "#0e009d",
+                        "on-error-container": "#510017",
+                        "on-background": "#302950",
+                        "secondary-dim": "#005867",
+                        "on-secondary-fixed-variant": "#005969",
+                        "tertiary-fixed-dim": "#ff7986",
+                        "surface-container-highest": "#e1d8ff",
+                        "tertiary-container": "#ff9099",
+                        "on-tertiary-fixed-variant": "#780021",
+                        "on-primary": "#f4f1ff",
+                        "tertiary": "#b80438",
+                        "surface-bright": "#faf4ff",
+                        "error-container": "#f74b6d",
+                        "on-primary-fixed": "#000000",
+                        "outline": "#79719d",
+                        "on-surface-variant": "#5e5680",
+                        "tertiary-fixed": "#ff9099",
+                        "inverse-primary": "#8083ff",
+                        "surface-variant": "#e1d8ff",
+                        "on-tertiary-fixed": "#39000b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000; /* Dark background for video call */
+        }
+        h1, h2, h3, h4, h5, h6, .font-headline {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased text-on-surface h-screen w-screen overflow-hidden flex flex-col relative">
+<!-- Top Controls Layer (Floating Glass) -->
+<div class="fixed top-0 left-0 w-full z-50 px-6 py-8 flex justify-between items-center pointer-events-none">
+<div class="flex items-center gap-3 pointer-events-auto bg-surface/20 backdrop-blur-md rounded-full px-4 py-2 border border-surface-container-lowest/10">
+<div class="w-2 h-2 rounded-full bg-error animate-pulse"></div>
+<span class="font-label text-sm text-surface-container-lowest font-medium">12:45</span>
+</div>
+<div class="flex gap-2 pointer-events-auto">
+<button class="w-10 h-10 rounded-full bg-surface/20 backdrop-blur-md flex items-center justify-center text-surface-container-lowest border border-surface-container-lowest/10 hover:bg-surface/30 transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">flip_camera_ios</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface/20 backdrop-blur-md flex items-center justify-center text-surface-container-lowest border border-surface-container-lowest/10 hover:bg-surface/30 transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Main Video Canvas (Split Screen) -->
+<div class="flex-1 flex flex-col md:flex-row w-full h-full p-2 gap-2 z-0">
+<!-- Remote User (Alex Cooking) - Top/Left -->
+<div class="flex-1 relative rounded-3xl overflow-hidden shadow-2xl shadow-black/50 group">
+<img alt="Remote video feed of Alex cooking in a modern kitchen with warm lighting" class="w-full h-full object-cover" data-alt="Remote video feed of a person cooking in a modern, well-lit kitchen, warm overhead lighting, focused expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbi1jqjZiq6o2FOfa1e_rK-Yp_yFN0EN2fh-pQY88SjdKq_T6IM4fZhP0FJPZqJ8Mu07sYanPGWHCa4wEktianyVdrF86j824maYbXz06tl6iD1hkYbTwnlQi6vFIkRtIR8jpPljLffXdPG0AczXWUc6UvoE7RMqig5ZWaZe_pDnpdq603UJHcfW4RrD0tmALfNxBvjHamtdot7X3ZYBUlExFGqYYqs_Kex2vaF2csA000dfZw7eXZjhKbT4dRy3ymv2gu0bzOH-o"/>
+<!-- Gradient Overlay for readability -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 pointer-events-none"></div>
+<!-- User Info Badge -->
+<div class="absolute bottom-6 left-6 flex items-center gap-3">
+<div class="bg-surface/20 backdrop-blur-md px-4 py-2 rounded-full border border-surface-container-lowest/10 flex items-center gap-2">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-surface-container-lowest/20">
+<img alt="Alex avatar" class="w-full h-full object-cover" data-alt="Small circular avatar portrait of a smiling young man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkSL3jkq9XN5Q-clib5e40b4p9vsjczryyyXEFwmGqgP_4Yx2Qq_Zf3L2lmjghiBnEQySss8DcVSNYlLW-LXwmmAHDV_8aNn7ZQhrpjDgk-FnR730foU2qnNRkn4SLy3BUyGtWtOvx6PRDA-ueveVYrkmVFi0OR2ebCEkiML4_7wQ0Ij4UKB8NFqEcfT09ai0HZhyYmINJoyJETRph4PrWjI5a-Wj_iW4HjVQuSPI7gQO-R-EGGZPITNWqcO0IaOXFjU2BSpI4cAg"/>
+</div>
+<span class="font-headline text-surface-container-lowest font-semibold tracking-wide">Alex (Host)</span>
+<span class="material-symbols-outlined text-surface-container-lowest text-sm ml-1" style="font-variation-settings: 'FILL' 1;">mic</span>
+</div>
+</div>
+</div>
+<!-- Local User (Maya) - Bottom/Right -->
+<div class="h-1/3 md:h-full md:w-1/3 relative rounded-3xl overflow-hidden shadow-2xl shadow-black/50 border-2 border-surface/10 md:border-none z-10 md:z-0 -mt-10 md:mt-0 ml-4 mr-4 md:m-0">
+<img alt="Local video feed of Maya smiling, well lit home office background" class="w-full h-full object-cover" data-alt="Local self-view video feed of a young woman smiling at camera, soft natural light, blurred home office background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdq_zEhmV6oVizGBCZa4OwVIvn9jw_NrUy_7HVdf7gx7nzIPtggXY_pbp-hLrbW718z-RHUObdqaKdHG6GSIkUqZ9SeYQYLl6lqfqH4-OtFcvt6ro3Lp5XqeI1fA1ACpheSzRfuWiUjAiTyhlSZmRWO0IUBkcd6MrIol7WAwuPPMIaHA2wQ3fKIrqx-si6lMtvzUtuh5vcU7ustLOq6Wk4x-_ENqVmLlLjHbOoumEOEt2a6O_zFW1ifV5ZCt_H8FpU-pduHYrG1Yk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80 pointer-events-none"></div>
+<div class="absolute bottom-4 left-4 bg-surface/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-surface-container-lowest/10">
+<span class="font-headline text-surface-container-lowest text-sm font-medium">You</span>
+</div>
+</div>
+</div>
+<!-- Side Tools (Floating right, overlapping depth) -->
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-20 pointer-events-auto">
+<!-- Chat Bubble Tool -->
+<button class="w-14 h-14 rounded-full bg-surface_container_highest/80 backdrop-blur-xl shadow-[0_16px_32px_rgba(48,41,80,0.2)] border border-surface-container-lowest/20 flex flex-col items-center justify-center text-primary relative hover:bg-surface transition-colors transform hover:-translate-x-1 duration-300">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">chat_bubble</span>
+<!-- Notification Dot -->
+<div class="absolute top-0 right-0 w-4 h-4 bg-error rounded-full border-2 border-surface_container_highest flex items-center justify-center">
+<span class="text-[8px] text-surface-container-lowest font-bold">2</span>
+</div>
+</button>
+<!-- Whiteboard Tool -->
+<button class="w-14 h-14 rounded-full bg-surface_container_highest/80 backdrop-blur-xl shadow-[0_16px_32px_rgba(48,41,80,0.2)] border border-surface-container-lowest/20 flex items-center justify-center text-primary hover:bg-surface transition-colors transform hover:-translate-x-1 duration-300">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">draw</span>
+</button>
+</div>
+<!-- Bottom Controls Dock (Floating Glassmorphism) -->
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-auto">
+<div class="bg-surface/80 backdrop-blur-2xl rounded-full px-6 py-4 flex items-center gap-6 shadow-[0_16px_32px_rgba(48,41,80,0.15)] border border-surface-container-lowest/20">
+<!-- Mic Control -->
+<button class="w-14 h-14 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 0;">mic</span>
+</button>
+<!-- Video Control -->
+<button class="w-14 h-14 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 0;">videocam</span>
+</button>
+<!-- End Call (The Power Pulse) -->
+<button class="w-16 h-16 rounded-full bg-gradient-to-br from-error to-error-container flex items-center justify-center text-surface-container-lowest shadow-[0_8px_16px_rgba(180,19,64,0.3)] hover:scale-105 transition-transform duration-200">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">call_end</span>
+</button>
+</div>
+</div>
+</body></html>

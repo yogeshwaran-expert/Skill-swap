@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+<title>SkillSwap - Matchmaking Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e6deff",
+                        "primary": "#4647d3",
+                        "on-error": "#ffefef",
+                        "primary-fixed": "#9396ff",
+                        "primary-fixed-dim": "#8387ff",
+                        "background": "#faf4ff",
+                        "inverse-on-surface": "#a097c5",
+                        "surface": "#faf4ff",
+                        "tertiary-dim": "#a20030",
+                        "on-primary-container": "#0a0081",
+                        "on-secondary-fixed": "#003a45",
+                        "surface-container": "#ece4ff",
+                        "primary-container": "#9396ff",
+                        "on-tertiary-container": "#68001b",
+                        "secondary": "#006576",
+                        "secondary-fixed": "#65e1ff",
+                        "outline-variant": "#b0a7d6",
+                        "secondary-fixed-dim": "#48d4f3",
+                        "inverse-surface": "#0f072e",
+                        "on-tertiary": "#ffefef",
+                        "error-dim": "#a70138",
+                        "surface-container-low": "#f4eeff",
+                        "on-secondary-container": "#004f5d",
+                        "on-secondary": "#def7ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#d8ceff",
+                        "surface-tint": "#4647d3",
+                        "error": "#b41340",
+                        "on-surface": "#302950",
+                        "secondary-container": "#65e1ff",
+                        "primary-dim": "#3939c7",
+                        "on-primary-fixed-variant": "#0e009d",
+                        "on-error-container": "#510017",
+                        "on-background": "#302950",
+                        "secondary-dim": "#005867",
+                        "on-secondary-fixed-variant": "#005969",
+                        "tertiary-fixed-dim": "#ff7986",
+                        "surface-container-highest": "#e1d8ff",
+                        "tertiary-container": "#ff9099",
+                        "on-tertiary-fixed-variant": "#780021",
+                        "on-primary": "#f4f1ff",
+                        "tertiary": "#b80438",
+                        "surface-bright": "#faf4ff",
+                        "error-container": "#f74b6d",
+                        "on-primary-fixed": "#000000",
+                        "outline": "#79719d",
+                        "on-surface-variant": "#5e5680",
+                        "tertiary-fixed": "#ff9099",
+                        "inverse-primary": "#8083ff",
+                        "surface-variant": "#e1d8ff",
+                        "on-tertiary-fixed": "#39000b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "safe": "env(safe-area-inset-bottom)"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Custom Utility for typography tokens */
+        .text-display-lg { font-size: 3.5rem; line-height: 4rem; letter-spacing: -0.02em; font-weight: 800; }
+        .text-display-sm { font-size: 2.25rem; line-height: 2.75rem; font-weight: 700; }
+        .text-headline-lg { font-size: 2rem; line-height: 2.5rem; font-weight: 700; }
+        .text-headline-sm { font-size: 1.5rem; line-height: 2rem; font-weight: 600; }
+        .text-body-md { font-size: 1rem; line-height: 1.5rem; font-weight: 400; }
+        .text-label-md { font-size: 0.875rem; line-height: 1.25rem; font-weight: 500; }
+        .text-label-sm { font-size: 0.75rem; line-height: 1rem; font-weight: 500; }
+
+        /* Custom shadow for parallax effect */
+        .shadow-ambient {
+            box-shadow: 0 16px 32px rgba(48, 41, 80, 0.06);
+        }
+        .shadow-ambient-hover {
+            box-shadow: 0 24px 48px rgba(48, 41, 80, 0.08);
+        }
+        .shadow-power-pulse {
+            box-shadow: 0 0 8px rgba(57, 57, 199, 0.5); /* primary-dim */
+        }
+        
+        /* Hide scrollbar for clean aesthetic */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body antialiased pb-24 md:pb-0 h-screen overflow-y-auto">
+<!-- TopAppBar (Web & Mobile) -->
+<header class="fixed top-0 w-full z-50 bg-[#faf4ff]/80 dark:bg-[#302950]/80 backdrop-blur-2xl bg-surface-container-low shadow-none shadow-[0_16px_32px_rgba(48,41,80,0.06)] flex justify-between items-center px-6 py-4 w-full md:hidden">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-ambient">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="close up portrait of young confident woman with natural makeup in soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBWJSvrr1iTaREzUccQ8Gf3_IFUXSaIPpbaLCT-cgbglHlcgAfLmqDFjTuMz0n0AcE8JY5ZFZU_ZlDh_r0Gujeuc4LgFsgkpcsUQgIsQSPRPnlwrOjLMFlxLD0Ly8zjvbGBY03c18SS-x_VhuwLvYaLkdon_1KTmx8e29B9aUT2uGuTGsdSNQn8P-XgagAjO5Fq68EgGNgZj3Cro_z0tYh2dGIH3OQramj8Q3Lr_MDo-a5EU3yM7IaKqwoJs7sl8rm7E7vdUgUZdQ"/>
+</div>
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold tracking-tight text-display-sm text-2xl font-black italic tracking-tighter bg-gradient-to-br from-[#4647d3] to-[#9396ff] bg-clip-text text-transparent">SkillSwap</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#f4eeff] dark:hover:bg-[#e1d8ff]/10 transition-colors duration-300 active:scale-95 transition-transform text-[#4647d3] dark:text-[#9396ff]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+</header>
+<!-- Web Top Nav (Hidden on Mobile) -->
+<header class="hidden md:flex fixed top-0 w-full z-50 bg-[#faf4ff]/80 backdrop-blur-2xl bg-surface-container-low shadow-none shadow-[0_16px_32px_rgba(48,41,80,0.06)] justify-between items-center px-8 py-4 w-full">
+<div class="flex items-center gap-8">
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold tracking-tight text-display-sm text-2xl font-black italic tracking-tighter bg-gradient-to-br from-[#4647d3] to-[#9396ff] bg-clip-text text-transparent">SkillSwap</h1>
+<nav class="flex gap-6">
+<a class="text-[#4647d3] font-bold font-['Plus_Jakarta_Sans'] text-label-md tracking-wider uppercase flex flex-col items-center gap-1 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+                     Discover
+                 </a>
+<a class="text-[#302950]/60 font-['Plus_Jakarta_Sans'] text-label-md tracking-wider uppercase flex flex-col items-center gap-1 hover:text-[#4647d3] transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">map</span>
+                     Map
+                 </a>
+<a class="text-[#302950]/60 font-['Plus_Jakarta_Sans'] text-label-md tracking-wider uppercase flex flex-col items-center gap-1 hover:text-[#4647d3] transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">diversity_3</span>
+                     Connect
+                 </a>
+<a class="text-[#302950]/60 font-['Plus_Jakarta_Sans'] text-label-md tracking-wider uppercase flex flex-col items-center gap-1 hover:text-[#4647d3] transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">verified_user</span>
+                     Trust
+                 </a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#f4eeff] transition-colors duration-300 active:scale-95 text-[#4647d3]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-ambient">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="close up portrait of young confident woman with natural makeup in soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrQwfhtkRb2BSro3wsffbN9F4cALvAZIBCFyO7ZsbNmf3SKt7_SFhbXmKLRmQJXI3QcKFr2r1PAE2kSBPv2SqAgv-ud_D2Ma3cLEYS8gY_crfn-cOtDk43MIY9kFeLqZNsEJG81Zro1I7y7bGnI3py3i3NozJ6AAi8S-MTCVHNT-TgpX93_6mTPv14_rZTM0O9bYWdXvuvaBkuF5xnK1X3pSxY8-3VPulN2FZRqyKn3HPNw1C9rWfvnGJA-B1hrOR7vfEDx-Yik70"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="pt-24 md:pt-32 px-4 md:px-8 max-w-5xl mx-auto flex flex-col gap-8 md:gap-12 relative z-10">
+<!-- Page Header -->
+<section class="flex flex-col gap-2">
+<h2 class="font-headline text-display-sm md:text-display-lg text-on-surface">Skill Matches</h2>
+<p class="text-body-md text-on-surface-variant max-w-md">Kinetic exchanges tailored for you. Swipe, connect, and start learning today.</p>
+</section>
+<!-- Match Feed -->
+<div class="flex flex-col gap-8 md:gap-12 pb-12">
+<!-- Maya's Profile Card (Top Half - Asymmetric Left) -->
+<article class="bg-surface-container-highest rounded-xl p-6 relative overflow-hidden flex flex-col gap-6 shadow-ambient transition-transform duration-300 hover:shadow-ambient-hover md:w-[85%] mr-auto">
+<!-- Background decorative element -->
+<div class="absolute -right-12 -top-12 w-48 h-48 bg-primary/5 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex justify-between items-start z-10">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="w-16 h-16 rounded-full overflow-hidden shadow-ambient border-2 border-surface-container-lowest">
+<img alt="Maya Profile" class="w-full h-full object-cover" data-alt="portrait of a young woman smiling outdoors with blurred green background soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQRB_UZeMNC8ggKC4gl3lynMsMOwu9oExTBKhpYZOShCixYC8_vIdRbjEKH-C9sB-tkFgu34L5fzlGjowJULhpJKAywqC462xqZhGdPKcOJy_Yuh5HUVeIsIUs72blXi-MtWZakUBuuiQ8gbQxb6SLmopkK5aJh0WR12KHusvAhYF-SPLWVUNA6awKN_XP0iyzdWKl3sbmUj3T5pDdLFaL9iKkkWecxX_QiOXvkKBMIJnj5gkw27sq60f5P79QcTvWr6wuzArAYLc"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-surface-container-lowest rounded-full p-1 shadow-sm">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline text-headline-sm text-on-surface">Maya</h3>
+<p class="text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[1rem]">location_on</span> Brooklyn, NY
+                            </p>
+</div>
+</div>
+<span class="text-primary font-headline text-label-md bg-surface-container-lowest px-3 py-1 rounded-full shadow-sm">92% Match</span>
+</div>
+<div class="flex flex-col gap-4 z-10">
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Wants to Learn</p>
+<div class="inline-flex bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full font-label text-label-md items-center gap-2">
+<span class="material-symbols-outlined text-[1.125rem]" style="font-variation-settings: 'FILL' 1;">photo_camera</span> Photography
+                        </div>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Can Teach</p>
+<div class="flex flex-wrap gap-2">
+<div class="inline-flex bg-surface-variant text-on-surface px-3 py-1.5 rounded-full font-label text-label-md">Graphic Design</div>
+<div class="inline-flex bg-surface-variant text-on-surface px-3 py-1.5 rounded-full font-label text-label-md">Illustration</div>
+</div>
+</div>
+</div>
+<div class="mt-2 flex justify-end z-10">
+<button class="bg-surface-container-lowest text-primary font-label text-label-md px-6 py-3 rounded-full flex items-center gap-2 active:scale-95 transition-transform duration-200">
+                        View Profile
+                        <span class="material-symbols-outlined text-[1.125rem]">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Alex's Profile Card (Bottom Half - Asymmetric Right with Primary Action) -->
+<article class="bg-surface-container-highest rounded-xl p-6 relative overflow-hidden flex flex-col gap-6 shadow-ambient transition-transform duration-300 hover:shadow-ambient-hover md:w-[85%] ml-auto">
+<!-- Background decorative element -->
+<div class="absolute -left-12 -bottom-12 w-48 h-48 bg-secondary-fixed/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex justify-between items-start z-10">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="w-20 h-20 rounded-full overflow-hidden shadow-ambient border-2 border-surface-container-lowest">
+<img alt="Alex Profile" class="w-full h-full object-cover" data-alt="portrait of a young man with short hair looking directly at camera with neutral expression urban background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDRWjSdTiOY93brimJm1XDXIqW3YOcqsmgTZvjTYUYOQUy0jue2Ihx3hy7cKUO_whAIM_OhM-sD__OTOMl87CMsHtGOG-Ph9JbuGERbDMT4ohjXAuRNx22fC0uLnNutsrhGPtAYcJQQMCnvXGhqDu03_KynprWLOY_uvUAmf7gLHfUm_-BwweP3kSxCNsX338nRBE0aAmb9FiucO7xwjaG71TMDQiI02RPD-8J1642TMKbp-L41vL3QYzwEM58PDyDCTIpMNhKRbI"/>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-surface-container-lowest rounded-full p-1 shadow-sm">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div class="flex flex-col">
+<h3 class="font-headline text-headline-sm text-on-surface">Alex</h3>
+<p class="text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[1rem]">location_on</span> Queens, NY
+                            </p>
+</div>
+</div>
+<span class="text-primary font-headline text-label-md bg-surface-container-lowest px-3 py-1 rounded-full shadow-sm">98% Match</span>
+</div>
+<div class="flex flex-col gap-4 z-10">
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Wants to Learn</p>
+<div class="inline-flex bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full font-label text-label-md items-center gap-2">
+<span class="material-symbols-outlined text-[1.125rem]" style="font-variation-settings: 'FILL' 1;">restaurant_menu</span> Cooking
+                        </div>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Can Teach</p>
+<div class="flex flex-wrap gap-2">
+<div class="inline-flex bg-surface-variant text-on-surface px-3 py-1.5 rounded-full font-label text-label-md">Web Development</div>
+<div class="inline-flex bg-surface-variant text-on-surface px-3 py-1.5 rounded-full font-label text-label-md">Guitar</div>
+</div>
+</div>
+</div>
+<div class="mt-4 flex justify-end z-10 relative">
+<!-- Glowing Connect Button -->
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-bold text-label-md px-8 py-3 rounded-full flex items-center gap-2 active:scale-95 transition-all duration-200 hover:shadow-power-pulse relative overflow-hidden group">
+<span class="relative z-10 flex items-center gap-2">
+                            Connect
+                            <span class="material-symbols-outlined text-[1.125rem]" style="font-variation-settings: 'FILL' 1;">handshake</span>
+</span>
+<!-- Inner subtle shine -->
+<div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+</button>
+</div>
+</article>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full rounded-t-[2.5rem] pb-safe bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl no-border shadow-[0_-8px_32px_rgba(48,41,80,0.04)] shadow-2xl fixed bottom-0 left-0 w-full z-50 flex justify-around items-end px-4 pb-4 pt-2">
+<a class="flex flex-col items-center justify-center bg-gradient-to-br from-[#4647d3] to-[#9396ff] text-white rounded-2xl px-5 py-2 mb-1 shadow-lg shadow-indigo-500/20 font-['Plus_Jakarta_Sans'] text-[10px] font-semibold tracking-wider uppercase active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+            Discover
+        </a>
+<a class="flex flex-col items-center justify-center text-[#302950]/40 dark:text-[#f4eeff]/40 px-5 py-2 hover:text-[#4647d3] transition-all font-['Plus_Jakarta_Sans'] text-[10px] font-semibold tracking-wider uppercase active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">map</span>
+            Map
+        </a>
+<a class="flex flex-col items-center justify-center text-[#302950]/40 dark:text-[#f4eeff]/40 px-5 py-2 hover:text-[#4647d3] transition-all font-['Plus_Jakarta_Sans'] text-[10px] font-semibold tracking-wider uppercase active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">diversity_3</span>
+            Connect
+        </a>
+<a class="flex flex-col items-center justify-center text-[#302950]/40 dark:text-[#f4eeff]/40 px-5 py-2 hover:text-[#4647d3] transition-all font-['Plus_Jakarta_Sans'] text-[10px] font-semibold tracking-wider uppercase active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">verified_user</span>
+            Trust
+        </a>
+</nav>
+</body></html>

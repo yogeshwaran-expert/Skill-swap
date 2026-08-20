@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SkillSwap - The Kinetic Exchange</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e6deff",
+                        "primary": "#4647d3",
+                        "on-error": "#ffefef",
+                        "primary-fixed": "#9396ff",
+                        "primary-fixed-dim": "#8387ff",
+                        "background": "#faf4ff",
+                        "inverse-on-surface": "#a097c5",
+                        "surface": "#faf4ff",
+                        "tertiary-dim": "#a20030",
+                        "on-primary-container": "#0a0081",
+                        "on-secondary-fixed": "#003a45",
+                        "surface-container": "#ece4ff",
+                        "primary-container": "#9396ff",
+                        "on-tertiary-container": "#68001b",
+                        "secondary": "#006576",
+                        "secondary-fixed": "#65e1ff",
+                        "outline-variant": "#b0a7d6",
+                        "secondary-fixed-dim": "#48d4f3",
+                        "inverse-surface": "#0f072e",
+                        "on-tertiary": "#ffefef",
+                        "error-dim": "#a70138",
+                        "surface-container-low": "#f4eeff",
+                        "on-secondary-container": "#004f5d",
+                        "on-secondary": "#def7ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#d8ceff",
+                        "surface-tint": "#4647d3",
+                        "error": "#b41340",
+                        "on-surface": "#302950",
+                        "secondary-container": "#65e1ff",
+                        "primary-dim": "#3939c7",
+                        "on-primary-fixed-variant": "#0e009d",
+                        "on-error-container": "#510017",
+                        "on-background": "#302950",
+                        "secondary-dim": "#005867",
+                        "on-secondary-fixed-variant": "#005969",
+                        "tertiary-fixed-dim": "#ff7986",
+                        "surface-container-highest": "#e1d8ff",
+                        "tertiary-container": "#ff9099",
+                        "on-tertiary-fixed-variant": "#780021",
+                        "on-primary": "#f4f1ff",
+                        "tertiary": "#b80438",
+                        "surface-bright": "#faf4ff",
+                        "error-container": "#f74b6d",
+                        "on-primary-fixed": "#000000",
+                        "outline": "#79719d",
+                        "on-surface-variant": "#5e5680",
+                        "tertiary-fixed": "#ff9099",
+                        "inverse-primary": "#8083ff",
+                        "surface-variant": "#e1d8ff",
+                        "on-tertiary-fixed": "#39000b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background-color: rgba(250, 244, 255, 0.7); /* surface color with opacity */
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        .ambient-shadow {
+            box-shadow: 0 24px 48px rgba(48, 41, 80, 0.08), 0 8px 16px rgba(48, 41, 80, 0.04);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<!-- 
+    Logic: Navigation Shell Suppression. 
+    This is a "Final Flow / Brand Screen" (splash/success intent). 
+    According to the mandatory rules, the global TopAppBar and BottomNavBar MUST be suppressed 
+    to prioritize the immersive brand canvas and avoid distracting from the final state.
+-->
+<body class="bg-surface relative overflow-hidden min-h-screen flex items-center justify-center font-body text-on-surface">
+<!-- Kinetic Background Energy -->
+<!-- Large blurred orbs to create dynamic, high-energy lighting without clutter -->
+<div class="absolute top-[-15%] left-[-10%] w-[60vw] h-[60vw] bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="absolute bottom-[-20%] right-[-15%] w-[70vw] h-[70vw] bg-secondary-fixed/20 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="absolute top-[20%] right-[10%] w-[30vw] h-[30vw] bg-tertiary-container/10 rounded-full blur-[80px] pointer-events-none"></div>
+<!-- Parallax UI Composition (The "Kinetic Exchange" layered effect) -->
+<div class="relative w-full max-w-7xl h-[707px] flex items-center justify-center pointer-events-none">
+<!-- Background Layer (Deepest) -->
+<!-- Floating Skill Tag 1 -->
+<div class="absolute top-[15%] left-[20%] transform -rotate-12 scale-75 blur-[2px] opacity-60">
+<div class="bg-surface-container-high rounded-full px-6 py-3 flex items-center gap-2 ambient-shadow">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">brush</span>
+<span class="font-label text-sm font-semibold text-primary">UI Design</span>
+</div>
+</div>
+<!-- Floating Skill Tag 2 -->
+<div class="absolute bottom-[25%] right-[15%] transform rotate-[15deg] scale-80 blur-[1px] opacity-70">
+<div class="bg-surface-container-highest rounded-full px-6 py-3 flex items-center gap-2 ambient-shadow">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">code</span>
+<span class="font-label text-sm font-semibold text-secondary-dim">Frontend</span>
+</div>
+</div>
+<!-- Mid-Foreground Layer (Tilted UI Panels) -->
+<!-- Panel 1: Activity Snippet (Tilted Left) -->
+<div class="absolute top-[25%] right-[25%] transform rotate-6 translate-x-[40px] translate-y-[-20px] z-10">
+<div class="glass-panel rounded-xl p-5 w-64 ambient-shadow border border-outline-variant/15 flex flex-col gap-3">
+<div class="flex justify-between items-start">
+<div class="w-10 h-10 rounded-full bg-gradient-to-br from-secondary-container to-secondary flex items-center justify-center text-white font-bold">M</div>
+<span class="material-symbols-outlined text-primary-fixed text-xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<div>
+<div class="h-4 w-3/4 bg-surface-container-high rounded-sm mb-2"></div>
+<div class="h-3 w-1/2 bg-surface-container rounded-sm"></div>
+</div>
+</div>
+</div>
+<!-- Panel 2: Connection Card (Tilted Right) -->
+<div class="absolute bottom-[15%] left-[25%] transform -rotate-6 translate-x-[-30px] translate-y-[30px] z-20">
+<div class="glass-panel rounded-xl p-4 w-72 ambient-shadow border border-outline-variant/15 flex items-center gap-4">
+<div class="w-14 h-14 rounded-full overflow-hidden bg-surface-container-high relative border-2 border-surface-container-lowest">
+<!-- Specific data-alt required for image/texture -->
+<div class="absolute inset-0 bg-cover bg-center" data-alt="close up portrait of a young professional woman with warm natural lighting and a confident smile against a blurred abstract background" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAmjdxfPYNqXSqdcFZOxRR--Tgg4ns8qTjVI5glCfQYA8bi_jkFZ7nCuoDVfihxDbMIkhSX2xqZAH5-ThPJnfLIECkzeGAImVpdGaBxACnc9jsNnX7KZDv7zm9KMbfv9GmInf6rfBSicnfP3_rz4K5yZtQ0zUfv2_VGG_-_C5pOySKooTfjkhBoY9Son2-o-CUwKxQSC_bAonUBioPbV6reXFPX04yoT_JRr1PzfTRTK5G-il7tkNULkIYjdRt6R75W0rMNLmYtihg');"></div>
+</div>
+<div class="flex-1">
+<p class="font-body text-sm font-bold text-on-surface mb-1">Match Found</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+<p class="font-label text-xs text-on-surface-variant">Ready to swap</p>
+</div>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Center Focus Layer (Brand Identity) -->
+<div class="relative z-50 flex flex-col items-center justify-center transform scale-110 pointer-events-auto">
+<!-- Interlocking 'S' Logo Construct -->
+<div class="relative w-32 h-32 mb-8 group">
+<!-- Outer Glow -->
+<div class="absolute inset-0 bg-primary/30 rounded-full blur-2xl group-hover:bg-primary/40 transition-colors duration-500"></div>
+<!-- Abstract 'S' using SVG paths to represent dynamic exchange -->
+<svg class="w-full h-full drop-shadow-2xl relative z-10" fill="none" viewbox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="primaryGrad" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#4647d3"></stop>
+<stop offset="100%" stop-color="#9396ff"></stop>
+</lineargradient>
+<lineargradient id="secondaryGrad" x1="100%" x2="0%" y1="100%" y2="0%">
+<stop offset="0%" stop-color="#006576"></stop>
+<stop offset="100%" stop-color="#65e1ff"></stop>
+</lineargradient>
+<filter height="140%" id="shadow" width="140%" x="-20%" y="-20%">
+<fedropshadow dx="0" dy="8" flood-color="#302950" flood-opacity="0.15" stddeviation="8"></fedropshadow>
+</filter>
+</defs>
+<!-- Top curve (Forward motion) -->
+<path d="M 75 35 C 75 15, 25 15, 25 35 C 25 45, 45 50, 50 50" filter="url(#shadow)" stroke="url(#primaryGrad)" stroke-linecap="round" stroke-width="14"></path>
+<!-- Arrow head top -->
+<polygon fill="#4647d3" points="75,20 90,35 60,35"></polygon>
+<!-- Bottom curve (Return motion) -->
+<path d="M 25 65 C 25 85, 75 85, 75 65 C 75 55, 55 50, 50 50" filter="url(#shadow)" stroke="url(#secondaryGrad)" stroke-linecap="round" stroke-width="14"></path>
+<!-- Arrow head bottom -->
+<polygon fill="#006576" points="25,80 10,65 40,65"></polygon>
+</svg>
+</div>
+<!-- Typography Anchor -->
+<div class="text-center">
+<h1 class="font-headline text-display-lg md:text-7xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-primary via-primary-container to-secondary-fixed mb-2 drop-shadow-sm">
+                    SkillSwap
+                </h1>
+<p class="font-body text-label-md md:text-body-md uppercase tracking-[0.2em] font-semibold text-on-surface-variant">
+                    The Kinetic Exchange
+                </p>
+</div>
+<!-- Subtle interaction prompt (Optional, implies continuity) -->
+<div class="mt-16 animate-pulse opacity-50">
+<span class="material-symbols-outlined text-primary text-3xl">keyboard_double_arrow_down</span>
+</div>
+</div>
+</div>
+</body></html>

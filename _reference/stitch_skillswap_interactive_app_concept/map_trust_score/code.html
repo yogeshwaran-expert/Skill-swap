@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SkillSwap - Map &amp; Trust Verification</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#e6deff",
+                        "primary": "#4647d3",
+                        "on-error": "#ffefef",
+                        "primary-fixed": "#9396ff",
+                        "primary-fixed-dim": "#8387ff",
+                        "background": "#faf4ff",
+                        "inverse-on-surface": "#a097c5",
+                        "surface": "#faf4ff",
+                        "tertiary-dim": "#a20030",
+                        "on-primary-container": "#0a0081",
+                        "on-secondary-fixed": "#003a45",
+                        "surface-container": "#ece4ff",
+                        "primary-container": "#9396ff",
+                        "on-tertiary-container": "#68001b",
+                        "secondary": "#006576",
+                        "secondary-fixed": "#65e1ff",
+                        "outline-variant": "#b0a7d6",
+                        "secondary-fixed-dim": "#48d4f3",
+                        "inverse-surface": "#0f072e",
+                        "on-tertiary": "#ffefef",
+                        "error-dim": "#a70138",
+                        "surface-container-low": "#f4eeff",
+                        "on-secondary-container": "#004f5d",
+                        "on-secondary": "#def7ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#d8ceff",
+                        "surface-tint": "#4647d3",
+                        "error": "#b41340",
+                        "on-surface": "#302950",
+                        "secondary-container": "#65e1ff",
+                        "primary-dim": "#3939c7",
+                        "on-primary-fixed-variant": "#0e009d",
+                        "on-error-container": "#510017",
+                        "on-background": "#302950",
+                        "secondary-dim": "#005867",
+                        "on-secondary-fixed-variant": "#005969",
+                        "tertiary-fixed-dim": "#ff7986",
+                        "surface-container-highest": "#e1d8ff",
+                        "tertiary-container": "#ff9099",
+                        "on-tertiary-fixed-variant": "#780021",
+                        "on-primary": "#f4f1ff",
+                        "tertiary": "#b80438",
+                        "surface-bright": "#faf4ff",
+                        "error-container": "#f74b6d",
+                        "on-primary-fixed": "#000000",
+                        "outline": "#79719d",
+                        "on-surface-variant": "#5e5680",
+                        "tertiary-fixed": "#ff9099",
+                        "inverse-primary": "#8083ff",
+                        "surface-variant": "#e1d8ff",
+                        "on-tertiary-fixed": "#39000b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": [
+                            "Plus Jakarta Sans",
+                            "sans-serif"
+                        ],
+                        "body": [
+                            "Inter",
+                            "sans-serif"
+                        ],
+                        "label": [
+                            "Inter",
+                            "sans-serif"
+                        ]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+        .pt-safe { padding-top: env(safe-area-inset-top); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body min-h-screen antialiased overflow-hidden">
+<!-- TopAppBar (Web & Mobile, fixed per JSON instructions) -->
+<header class="fixed top-0 w-full z-50 bg-[#faf4ff]/80 dark:bg-[#302950]/80 backdrop-blur-2xl bg-surface-container-low shadow-none shadow-[0_16px_32px_rgba(48,41,80,0.06)]">
+<div class="flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden shrink-0">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="Close up portrait of a young professional woman smiling warmly in natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0vTl-ZT49a-ZH115FiYOjys9ynOWzT_yZTbDMVD0aZ2awDCC5K5yLjO8rmWFKX7zkqJTec89XNfUksRxrhMGuDwIYkuUtOYio45sUiJFhfkun5zarRwEgL5lT8pkbEh8cLnbzHoZk_mjsW39soWXuJzz2F6cCpUsBARK2v0PUv1Wic6sNSguALjWVAElw1AZQudRGpy5bVyo0sFdIBYmySXVcsrvLQcAprYlW3yyb6g6yINcKQutD5mEJBUmip0ds2Kwa_9cXcoM"/>
+</div>
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold tracking-tight text-display-sm text-2xl font-black italic tracking-tighter bg-gradient-to-br from-[#4647d3] to-[#9396ff] bg-clip-text text-transparent">SkillSwap</h1>
+</div>
+<button aria-label="notifications" class="text-[#4647d3] dark:text-[#9396ff] hover:bg-[#f4eeff] dark:hover:bg-[#e1d8ff]/10 transition-colors duration-300 p-2 rounded-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas - Map Interface -->
+<main class="relative h-screen w-full pt-[72px] pb-[88px] md:pb-0">
+<!-- Map Background Layer (Level 0) -->
+<div class="absolute inset-0 z-0">
+<img alt="Map View" class="w-full h-full object-cover opacity-80" data-alt="Abstract stylized city map with soft pastel colors, subtle street lines and gentle lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCccS9OyD3So7GabeWX1Eopof8YfMAO5BkEWsZAdvUKqEYJ0Bjm9kmVqfEBe2HMQNKDgorZ1_wJuYW2KYggxPecr1a0GkvmyTx1dijG1_1HEipzKv1SaR8W4OMdikiVaZLA5m2qT1rSfS1wNTiHYZ-KXFm4WRoQux5_3E1XbHmVHtpwR17pjrsgh5vYsSVDVMGnosE9ptJVmVSsGDZJTeiLJt822xPKjh_Z0_CgY8yV-IziyQ6eqv0a4nlwNQwhRlH19k1h5l0pPw4"/>
+<!-- Overlay to soften map and ensure text readability -->
+<div class="absolute inset-0 bg-surface/40 backdrop-blur-[2px]"></div>
+</div>
+<!-- Interactive Map Elements (Level 1 & 2) -->
+<div class="relative z-10 w-full h-full flex flex-col justify-center items-center px-4">
+<!-- Contextual Search / Filter Pill (Floating) -->
+<div class="absolute top-24 left-1/2 -translate-x-1/2 bg-surface-container-highest/90 backdrop-blur-md px-6 py-3 rounded-full flex items-center gap-3 shadow-[0_16px_32px_rgba(48,41,80,0.06)] border border-outline-variant/15 w-11/12 max-w-md mx-auto">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+<input class="bg-transparent border-none outline-none text-on-surface placeholder:text-on-surface-variant font-label text-sm w-full focus:ring-0" placeholder="Find skills near 'The Coffee Bean'..." type="text"/>
+<button class="p-1 rounded-full bg-secondary-container text-on-secondary-container shrink-0">
+<span class="material-symbols-outlined text-sm">tune</span>
+</button>
+</div>
+<!-- The Pin & Profile Box Anchor -->
+<div class="relative group mt-12">
+<!-- Trust Badge (Foreground - Level 2) -->
+<div class="absolute -top-12 -right-8 z-30 bg-surface-container-lowest rounded-xl px-3 py-2 flex items-center gap-2 shadow-[0_16px_32px_rgba(48,41,80,0.06)] border border-outline-variant/15 animate-bounce-slow">
+<div class="bg-primary/10 rounded-full p-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div>
+<p class="font-headline font-bold text-on-surface text-sm leading-tight">4.8 <span class="text-on-surface-variant font-normal text-xs">/ 5</span></p>
+<p class="font-label text-[10px] text-primary uppercase tracking-wider">Trust Score</p>
+</div>
+</div>
+<!-- Floating Profile Box (Mid-ground - Level 1) -->
+<div class="bg-surface-container-highest/95 backdrop-blur-xl rounded-2xl p-4 shadow-[0_16px_32px_rgba(48,41,80,0.06)] border border-outline-variant/15 w-64 flex flex-col gap-3 relative z-20">
+<div class="flex items-start gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-surface-container-lowest shadow-sm shrink-0">
+<img alt="Alex R. Profile" class="w-full h-full object-cover" data-alt="Portrait of a friendly young man with glasses and a slight smile in a modern setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV3jVe3LDATmZaJuelWKJB3okDxDbC9fykp0WJQZfcvjXWcPvd6WKNnqdTCLYP0gCi5jOQoeyjTIJVjKkOPZG47GFNSBiiNMsCI_cgNCuw4D4dFyFPoAARxzI9gZSLv45366Fslboi_-g0gi7RWEEq262rdoCsR6QuUWTK_ehfZHatTxemoZLGkvS14PHF7Yx4a3S_w0H8uZd56ZBba8jogdntsDUoJh3HGGEcD2qVaegWwjqqTLEcaeaGXS_McRC9NYbi5sM27Rc"/>
+</div>
+<div class="flex-1">
+<h3 class="font-headline font-bold text-on-surface text-lg leading-none">Alex R.</h3>
+<p class="font-label text-on-surface-variant text-sm mt-1">Guitar &amp; Theory</p>
+</div>
+</div>
+<div class="flex gap-2 flex-wrap">
+<span class="bg-surface-container-low text-on-surface-variant font-label text-[10px] px-2 py-1 rounded-full border border-outline-variant/10">Spanish</span>
+<span class="bg-secondary-container text-on-secondary-container font-label text-[10px] px-2 py-1 rounded-full">Offering</span>
+</div>
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-surface-container-lowest font-headline font-bold py-2 rounded-full hover:shadow-[0_0_16px_rgba(70,71,211,0.4)] transition-all mt-2 text-sm">
+                        Connect Now
+                    </button>
+</div>
+<!-- The Pin Connector -->
+<div class="w-0.5 h-8 bg-primary absolute -bottom-8 left-1/2 -translate-x-1/2 z-10"></div>
+<!-- Map Marker Point -->
+<div class="w-4 h-4 bg-primary rounded-full absolute -bottom-10 left-1/2 -translate-x-1/2 z-10 border-2 border-surface-container-lowest shadow-md animate-pulse"></div>
+</div>
+<!-- Location Context Tag -->
+<div class="absolute bottom-32 left-1/2 -translate-x-1/2 bg-surface-container-low/80 backdrop-blur-sm px-4 py-2 rounded-full border border-outline-variant/10 shadow-sm">
+<p class="font-label text-on-surface-variant text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+                    The Coffee Bean
+                </p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full rounded-t-[2.5rem] pb-safe no-border shadow-[0_-8px_32px_rgba(48,41,80,0.04)] shadow-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl z-50">
+<div class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-end px-4 pb-4 pt-2">
+<!-- Inactive Tab: Discover -->
+<a class="flex flex-col items-center justify-center text-[#302950]/40 dark:text-[#f4eeff]/40 px-5 py-2 hover:text-[#4647d3] transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1">explore</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-semibold tracking-wider uppercase">Discover</span>
+</a>
+<!-- Active Tab: Map -->
+<a class="flex flex-col items-center justify-center bg-gradient-to-br from-[#4647d3] to-[#9396ff] text-white rounded-2xl px-5 py-2 mb-1 shadow-lg shadow-indigo-500/20 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-semibold tracking-wider uppercase">Map</span>
+</a>
+<!-- Inactive Tab: Connect -->
+<a class="flex flex-col items-center justify-center text-[#302950]/40 dark:text-[#f4eeff]/40 px-5 py-2 hover:text-[#4647d3] transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1">diversity_3</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-semibold tracking-wider uppercase">Connect</span>
+</a>
+<!-- Inactive Tab: Trust -->
+<a class="flex flex-col items-center justify-center text-[#302950]/40 dark:text-[#f4eeff]/40 px-5 py-2 hover:text-[#4647d3] transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1">verified_user</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[10px] font-semibold tracking-wider uppercase">Trust</span>
+</a>
+</div>
+</nav>
+<!-- Web Navigation Cluster (Hidden on Mobile, flex on md) -->
+<div class="hidden md:flex fixed top-4 right-20 z-50 items-center gap-6 bg-surface-container-lowest/80 backdrop-blur-xl px-6 py-2 rounded-full shadow-[0_16px_32px_rgba(48,41,80,0.06)] border border-outline-variant/15">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-headline text-sm font-semibold flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-sm">explore</span> Discover
+        </a>
+<a class="text-primary font-bold font-headline text-sm flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">map</span> Map
+        </a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-headline text-sm font-semibold flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-sm">diversity_3</span> Connect
+        </a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-headline text-sm font-semibold flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-sm">verified_user</span> Trust
+        </a>
+</div>
+</body></html>
