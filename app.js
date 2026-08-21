@@ -14,6 +14,16 @@ document.addEventListener('DOMContentLoaded', () => {
         : null;
     let authSession = null;
     let authMode = 'signup';
+    let sessionTimerId = null;
+
+    // ═══════════════════════════════════════════
+    // XSS SANITIZER — Escape user-controlled HTML
+    // ═══════════════════════════════════════════
+    function sanitize(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
 
     // ═══════════════════════════════════════════
     // STORAGE MANAGER — localStorage wrapper
@@ -59,6 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
             onboarded: false,
             loggedIn: false,
             safetyDismissed: false,
+            notifications: {
+                swapRequests: true,
+                newMatches: true,
+                messages: true,
+                reviews: true,
+                systemUpdates: true,
+            },
         },
         currentScreen: 'loading',
         currentTab: 'home',
@@ -92,6 +109,11 @@ document.addEventListener('DOMContentLoaded', () => {
         saveState();
     }
 
+    function handleAuthSwitch(event) {
+        event.preventDefault();
+        setAuthMode(authMode === 'signup' ? 'signin' : 'signup');
+    }
+
     function setAuthMode(mode) {
         authMode = mode;
         const isSignup = mode === 'signup';
@@ -101,10 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('auth-switch-copy').innerHTML = isSignup
             ? 'Already have an account? <a href="#" id="btn-auth-switch">Sign In</a>'
             : 'New to SkillSwap? <a href="#" id="btn-auth-switch">Create an account</a>';
-        document.getElementById('btn-auth-switch').addEventListener('click', (event) => {
-            event.preventDefault();
-            setAuthMode(isSignup ? 'signin' : 'signup');
-        });
+        const switchBtn = document.getElementById('btn-auth-switch');
+        switchBtn.removeEventListener('click', handleAuthSwitch);
+        switchBtn.addEventListener('click', handleAuthSwitch);
     }
 
     // ═══════════════════════════════════════════
@@ -166,15 +187,27 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ═══════════════════════════════════════════
-    // TOAST NOTIFICATIONS
+    // TOAST NOTIFICATIONS — Enhanced with icons
     // ═══════════════════════════════════════════
     const toastEl = document.getElementById('toast-notification');
     const toastMsg = document.getElementById('toast-message');
+    const toastIcon = document.getElementById('toast-icon');
     let toastTimer;
+
+    const toastIcons = {
+        success: 'check_circle',
+        error: 'error',
+        info: 'info',
+        warning: 'warning'
+    };
 
     function showToast(message, type = 'info') {
         clearTimeout(toastTimer);
         toastMsg.textContent = message;
+        if (toastIcon) {
+            toastIcon.textContent = toastIcons[type] || 'info';
+            toastIcon.style.fontVariationSettings = "'FILL' 1";
+        }
         toastEl.className = 'toast';
         toastEl.classList.add(`toast-${type}`);
         requestAnimationFrame(() => {
@@ -182,20 +215,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         toastTimer = setTimeout(() => {
             toastEl.classList.remove('visible');
-        }, 3000);
+        }, 3500);
     }
 
     // ═══════════════════════════════════════════
     // SCREEN NAVIGATION
     // ═══════════════════════════════════════════
     function showScreen(screenId) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        const current = document.querySelector('.screen.active');
         const target = document.getElementById(`screen-${screenId}`);
-        if (target) {
+        if (!target) return;
+
+        if (current && current !== target) {
+            current.classList.add('screen-exit');
+            target.classList.add('screen-enter');
             target.classList.add('active');
-            state.currentScreen = screenId;
-            saveState();
+
+            requestAnimationFrame(() => {
+                target.classList.remove('screen-enter');
+                target.classList.add('screen-enter-active');
+            });
+
+            setTimeout(() => {
+                current.classList.remove('active', 'screen-exit');
+                target.classList.remove('screen-enter-active');
+            }, 350);
+        } else {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            target.classList.add('active');
         }
+
+        state.currentScreen = screenId;
+        saveState();
     }
 
     // ═══════════════════════════════════════════
@@ -251,9 +302,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tabName === 'collaborate') {
             if (appHeader) appHeader.style.display = 'none';
             if (bottomNav) bottomNav.style.opacity = '0.3';
+            startSessionTimer();
         } else {
             if (appHeader) appHeader.style.display = 'flex';
             if (bottomNav) bottomNav.style.opacity = '1';
+            stopSessionTimer();
         }
     }
 
@@ -452,10 +505,96 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Google OAuth
+    document.getElementById('btn-google-auth')?.addEventListener('click', async () => {
+        if (!supabaseClient) {
+            showToast('Authentication is not configured.', 'error');
+            return;
+        }
+        try {
+            const { error } = await supabaseClient.auth.signInWithOAuth({
+                provider: 'google',
+                options: { redirectTo: window.location.origin + window.location.pathname }
+            });
+            if (error) throw error;
+        } catch (err) {
+            showToast(err.message || 'Google sign-in failed. Please try again.', 'error');
+        }
+    });
+
+    // Apple Auth — Supabase OAuth
+    document.getElementById('btn-apple-auth')?.addEventListener('click', async () => {
+        if (!supabaseClient) {
+            showToast('Authentication is not configured.', 'error');
+            return;
+        }
+        try {
+            const { error } = await supabaseClient.auth.signInWithOAuth({
+                provider: 'apple',
+                options: { redirectTo: window.location.origin + window.location.pathname }
+            });
+            if (error) throw error;
+        } catch (err) {
+            showToast(err.message || 'Apple sign-in failed. Please try again.', 'error');
+        }
+    });
+
     // Profile Setup Back → Sign Up
     document.getElementById('profile-setup-back')?.addEventListener('click', () => {
         showScreen('signup');
     });
+
+    // ═══════════════════════════════════════════
+    // PROFILE PHOTO UPLOAD
+    // ═══════════════════════════════════════════
+    const photoFileInput = document.getElementById('photo-file-input');
+    const photoEditBtn = document.querySelector('.btn-photo-edit');
+
+    photoEditBtn?.addEventListener('click', () => {
+        if (photoFileInput) photoFileInput.click();
+    });
+
+    photoFileInput?.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (!file.type.startsWith('image/')) {
+            showToast('Please select an image file.', 'error');
+            return;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+            showToast('Image must be under 5MB.', 'error');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const base64 = event.target.result;
+            state.user.photo = base64;
+            saveState();
+            updateAllAvatars(base64);
+            showToast('Profile photo updated! 📸', 'success');
+        };
+        reader.readAsDataURL(file);
+    });
+
+    function updateAllAvatars(src) {
+        // Profile setup preview
+        const preview = document.querySelector('#profile-photo-preview img');
+        if (preview) preview.src = src;
+        // Header avatar
+        const headerAvatar = document.querySelector('#header-avatar-btn img');
+        if (headerAvatar) headerAvatar.src = src;
+        // Sidebar avatar
+        const sidebarAvatar = document.querySelector('.sidebar-profile img');
+        if (sidebarAvatar) sidebarAvatar.src = src;
+        // Profile tab avatar
+        const profileAvatar = document.getElementById('profile-avatar-display');
+        if (profileAvatar) profileAvatar.src = src;
+    }
+
+    // Load saved photo on init
+    if (state.user.photo) {
+        updateAllAvatars(state.user.photo);
+    }
 
     // Complete Profile → App Main
     document.getElementById('btn-profile-complete')?.addEventListener('click', () => {
@@ -488,13 +627,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // ═══════════════════════════════════════════
     function createSkillChip(name, type, level = '') {
         const chip = document.createElement('div');
-        chip.className = `skill-chip skill-chip-${type}`;
-        chip.innerHTML = `
-            <span>${name}</span>
-            ${level ? `<span class="skill-level">${level}</span>` : ''}
-            <button class="chip-remove" aria-label="Remove ${name}">×</button>
-        `;
-        chip.querySelector('.chip-remove').addEventListener('click', (e) => {
+        chip.className = `skill-chip skill-chip-${sanitize(type)}`;
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = name;
+        chip.appendChild(nameSpan);
+        if (level) {
+            const levelSpan = document.createElement('span');
+            levelSpan.className = 'skill-level';
+            levelSpan.textContent = level;
+            chip.appendChild(levelSpan);
+        }
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'chip-remove';
+        removeBtn.setAttribute('aria-label', `Remove ${name}`);
+        removeBtn.textContent = '×';
+        chip.appendChild(removeBtn);
+        removeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             chip.style.transition = 'all 0.3s ease';
             chip.style.opacity = '0';
@@ -589,6 +737,39 @@ document.addEventListener('DOMContentLoaded', () => {
         updateProfileSkills();
     }
 
+    function buildProfileSkillItem(skill, i, colors, icons, proficiencies, subtexts) {
+        const item = document.createElement('div');
+        item.className = 'profile-skill-item';
+
+        const iconWrap = document.createElement('div');
+        iconWrap.className = 'profile-skill-icon';
+        iconWrap.style.background = `linear-gradient(135deg, ${colors[i % colors.length]})`;
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'material-symbols-outlined';
+        iconSpan.style.fontVariationSettings = "'FILL' 1";
+        iconSpan.textContent = icons[i % icons.length];
+        iconWrap.appendChild(iconSpan);
+        item.appendChild(iconWrap);
+
+        const info = document.createElement('div');
+        info.className = 'profile-skill-info';
+        const h4 = document.createElement('h4');
+        h4.textContent = skill;
+        const p = document.createElement('p');
+        p.textContent = subtexts[i % subtexts.length];
+        info.appendChild(h4);
+        info.appendChild(p);
+        item.appendChild(info);
+
+        const badge = document.createElement('span');
+        const prof = proficiencies[i % proficiencies.length];
+        badge.className = `proficiency-badge proficiency-${prof.toLowerCase()}`;
+        badge.textContent = prof;
+        item.appendChild(badge);
+
+        return item;
+    }
+
     function updateProfileSkills() {
         const teachContainer = document.getElementById('profile-teach-skills');
         const learnContainer = document.getElementById('profile-learn-skills');
@@ -597,24 +778,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (state.user.skillsTeach.length > 0 && teachContainer) {
             if (teachEmpty) teachEmpty.classList.remove('active');
-            // Remove old items (except empty state)
             teachContainer.querySelectorAll('.profile-skill-item').forEach(el => el.remove());
             const colors = ['var(--primary), var(--primary-container)', 'var(--secondary), var(--secondary-container)', 'var(--accent-lavender), var(--accent-lavender-light)'];
             const icons = ['brush', 'draw', 'devices', 'photo_camera', 'restaurant', 'translate', 'music_note', 'fitness_center'];
             state.user.skillsTeach.forEach((skill, i) => {
-                const item = document.createElement('div');
-                item.className = 'profile-skill-item';
-                item.innerHTML = `
-                    <div class="profile-skill-icon" style="background: linear-gradient(135deg, ${colors[i % colors.length]});">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">${icons[i % icons.length]}</span>
-                    </div>
-                    <div class="profile-skill-info">
-                        <h4>${skill}</h4>
-                        <p>Skill exchange available</p>
-                    </div>
-                    <span class="proficiency-badge proficiency-${['expert', 'intermediate', 'beginner'][i % 3]}">${['Expert', 'Intermediate', 'Beginner'][i % 3]}</span>
-                `;
-                teachContainer.appendChild(item);
+                teachContainer.appendChild(buildProfileSkillItem(skill, i, colors, icons, ['Expert', 'Intermediate', 'Beginner'], ['Skill exchange available']));
             });
         }
 
@@ -624,19 +792,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const colors = ['var(--secondary), var(--secondary-container)', 'var(--primary), var(--primary-container)'];
             const icons = ['photo_camera', 'music_note', 'restaurant', 'code', 'piano', 'translate', 'fitness_center', 'draw'];
             state.user.skillsLearn.forEach((skill, i) => {
-                const item = document.createElement('div');
-                item.className = 'profile-skill-item';
-                item.innerHTML = `
-                    <div class="profile-skill-icon" style="background: linear-gradient(135deg, ${colors[i % colors.length]});">
-                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">${icons[i % icons.length]}</span>
-                    </div>
-                    <div class="profile-skill-info">
-                        <h4>${skill}</h4>
-                        <p>Looking for a teacher</p>
-                    </div>
-                    <span class="proficiency-badge proficiency-beginner">Beginner</span>
-                `;
-                learnContainer.appendChild(item);
+                learnContainer.appendChild(buildProfileSkillItem(skill, i, colors, icons, ['Beginner'], ['Looking for a teacher']));
             });
         }
     }
@@ -800,6 +956,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1200);
     });
 
+    // Accept Swap 2 (Maya)
+    document.getElementById('btn-accept-swap-2')?.addEventListener('click', () => {
+        const btn = document.getElementById('btn-accept-swap-2');
+        btn.innerHTML = `
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+            <span>Accepted!</span>
+        `;
+        btn.style.background = 'linear-gradient(135deg, #8BC8A4, #A8E6CF)';
+        setTimeout(() => {
+            const card = btn.closest('.swap-card');
+            if (card) {
+                card.style.transition = 'all 0.4s ease';
+                card.style.opacity = '0';
+                card.style.transform = 'translateX(100%)';
+                setTimeout(() => card.style.display = 'none', 400);
+            }
+            const badge = document.getElementById('pending-badge');
+            if (badge) {
+                const current = parseInt(badge.textContent) || 0;
+                badge.textContent = Math.max(0, current - 1);
+            }
+            showToast('Swap with Maya accepted! 🤝', 'success');
+        }, 1200);
+    });
+
+    // Decline Swap handlers
+    function declineSwap(btnId) {
+        document.getElementById(btnId)?.addEventListener('click', () => {
+            const btn = document.getElementById(btnId);
+            const card = btn.closest('.swap-card');
+            if (card) {
+                card.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+                card.style.opacity = '0';
+                card.style.transform = 'translateX(-100%) rotate(-3deg)';
+                setTimeout(() => {
+                    card.style.display = 'none';
+                    const badge = document.getElementById('pending-badge');
+                    if (badge) {
+                        const current = parseInt(badge.textContent) || 0;
+                        badge.textContent = Math.max(0, current - 1);
+                        if (current - 1 <= 0) badge.style.display = 'none';
+                    }
+                    const navBadge = document.querySelector('.nav-badge');
+                    if (navBadge) {
+                        const current = parseInt(navBadge.textContent) || 0;
+                        navBadge.textContent = Math.max(0, current - 1);
+                        if (current - 1 <= 0) navBadge.style.display = 'none';
+                    }
+                }, 400);
+                showToast('Swap request declined', 'info');
+            }
+        });
+    }
+    declineSwap('btn-decline-swap-1');
+    declineSwap('btn-decline-swap-2');
+
     // Find swap from empty state
     document.getElementById('btn-find-swap')?.addEventListener('click', () => navigateToTab('home'));
 
@@ -942,41 +1154,145 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ═══════════════════════════════════════════
-    // DISCOVER — SEARCH & FILTERS
+    // DISCOVER — SEARCH & FILTERS (Enhanced)
     // ═══════════════════════════════════════════
+    const skillsDatabase = [
+        { name: 'Guitar', category: 'Music', icon: 'music_note', users: 24 },
+        { name: 'Piano', category: 'Music', icon: 'piano', users: 18 },
+        { name: 'Music Theory', category: 'Music', icon: 'library_music', users: 12 },
+        { name: 'Singing', category: 'Music', icon: 'mic', users: 15 },
+        { name: 'Web Development', category: 'Tech', icon: 'code', users: 42 },
+        { name: 'Python Programming', category: 'Tech', icon: 'terminal', users: 38 },
+        { name: 'UI/UX Design', category: 'Tech', icon: 'design_services', users: 29 },
+        { name: 'Data Science', category: 'Tech', icon: 'analytics', users: 21 },
+        { name: 'Graphic Design', category: 'Art', icon: 'brush', users: 31 },
+        { name: 'Illustration', category: 'Art', icon: 'draw', users: 22 },
+        { name: 'Photography', category: 'Art', icon: 'photo_camera', users: 27 },
+        { name: 'Digital Art', category: 'Art', icon: 'palette', users: 19 },
+        { name: 'Spanish', category: 'Languages', icon: 'translate', users: 33 },
+        { name: 'French', category: 'Languages', icon: 'translate', users: 26 },
+        { name: 'Japanese', category: 'Languages', icon: 'translate', users: 17 },
+        { name: 'Mandarin', category: 'Languages', icon: 'translate', users: 14 },
+        { name: 'Italian Cooking', category: 'Cooking', icon: 'restaurant', users: 20 },
+        { name: 'Baking', category: 'Cooking', icon: 'bakery_dining', users: 16 },
+        { name: 'Meal Prep', category: 'Cooking', icon: 'lunch_dining', users: 13 },
+        { name: 'Yoga', category: 'Fitness', icon: 'self_improvement', users: 25 },
+        { name: 'Weight Training', category: 'Fitness', icon: 'fitness_center', users: 30 },
+        { name: 'Running Coach', category: 'Fitness', icon: 'directions_run', users: 11 },
+        { name: 'Financial Planning', category: 'Business', icon: 'account_balance', users: 19 },
+        { name: 'Marketing', category: 'Business', icon: 'campaign', users: 23 },
+        { name: 'Public Speaking', category: 'Business', icon: 'record_voice_over', users: 14 },
+        { name: 'Woodworking', category: 'DIY', icon: 'carpenter', users: 10 },
+        { name: 'Sewing', category: 'DIY', icon: 'checkroom', users: 12 },
+        { name: 'Home Repair', category: 'DIY', icon: 'build', users: 15 },
+        { name: 'Math Tutoring', category: 'Academic', icon: 'calculate', users: 28 },
+        { name: 'Essay Writing', category: 'Academic', icon: 'edit_note', users: 16 },
+        { name: 'SAT Prep', category: 'Academic', icon: 'school', users: 9 },
+    ];
+
+    let activeCategory = 'All';
+    const searchResultsContainer = document.getElementById('search-results-container');
+
     document.querySelectorAll('.filter-pill').forEach(pill => {
         pill.addEventListener('click', () => {
             document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
             pill.classList.add('active');
+            activeCategory = pill.textContent.trim();
+            const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+            performSearch(query);
         });
     });
 
     const searchInput = document.getElementById('discover-search-input');
     const searchNoResults = document.getElementById('search-no-results');
     const mapView = document.getElementById('discover-map-view');
+    const searchCount = document.getElementById('search-result-count');
 
-    searchInput?.addEventListener('input', () => {
-        const query = searchInput.value.trim().toLowerCase();
-        if (query.length > 2) {
-            const skills = ['guitar', 'cooking', 'design', 'photography', 'spanish', 'coding', 'fitness', 'illustration', 'music', 'web', 'art', 'yoga'];
-            const found = skills.some(s => s.includes(query));
-            if (!found) {
+    function performSearch(query) {
+        let results = skillsDatabase;
+
+        // Category filter
+        if (activeCategory !== 'All') {
+            results = results.filter(s => s.category === activeCategory);
+        }
+
+        // Text filter
+        if (query.length > 1) {
+            results = results.filter(s =>
+                s.name.toLowerCase().includes(query) ||
+                s.category.toLowerCase().includes(query)
+            );
+        }
+
+        // Update count
+        if (searchCount) {
+            searchCount.textContent = query.length > 1 || activeCategory !== 'All'
+                ? `${results.length} skill${results.length !== 1 ? 's' : ''} found`
+                : '';
+        }
+
+        // Render results
+        if (searchResultsContainer) {
+            searchResultsContainer.innerHTML = '';
+            if (results.length === 0 && (query.length > 1 || activeCategory !== 'All')) {
                 searchNoResults.classList.add('active');
                 if (mapView) mapView.style.display = 'none';
             } else {
                 searchNoResults.classList.remove('active');
-                if (mapView) mapView.style.display = 'block';
+                if (query.length > 1 || activeCategory !== 'All') {
+                    if (mapView) mapView.style.display = 'none';
+                    results.forEach(skill => {
+                        const card = document.createElement('div');
+                        card.className = 'search-result-card';
+                        const iconDiv = document.createElement('div');
+                        iconDiv.className = 'search-result-icon';
+                        const icon = document.createElement('span');
+                        icon.className = 'material-symbols-outlined';
+                        icon.style.fontVariationSettings = "'FILL' 1";
+                        icon.textContent = skill.icon;
+                        iconDiv.appendChild(icon);
+                        const infoDiv = document.createElement('div');
+                        infoDiv.className = 'search-result-info';
+                        const h4 = document.createElement('h4');
+                        h4.textContent = skill.name;
+                        const p = document.createElement('p');
+                        p.textContent = `${skill.category} • ${skill.users} people nearby`;
+                        infoDiv.appendChild(h4);
+                        infoDiv.appendChild(p);
+                        const btn = document.createElement('button');
+                        btn.className = 'btn-secondary btn-sm';
+                        btn.textContent = 'Explore';
+                        btn.addEventListener('click', () => {
+                            matchModal.style.display = 'flex';
+                            setTimeout(() => animateScore(), 500);
+                        });
+                        card.appendChild(iconDiv);
+                        card.appendChild(infoDiv);
+                        card.appendChild(btn);
+                        searchResultsContainer.appendChild(card);
+                    });
+                } else {
+                    if (mapView) mapView.style.display = 'block';
+                }
             }
-        } else {
-            searchNoResults.classList.remove('active');
-            if (mapView) mapView.style.display = 'block';
         }
+    }
+
+    searchInput?.addEventListener('input', () => {
+        const query = searchInput.value.trim().toLowerCase();
+        performSearch(query);
     });
 
     document.getElementById('btn-clear-search')?.addEventListener('click', () => {
         if (searchInput) searchInput.value = '';
+        activeCategory = 'All';
+        document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+        const allPill = document.querySelector('.filter-pill');
+        if (allPill) allPill.classList.add('active');
         if (searchNoResults) searchNoResults.classList.remove('active');
         if (mapView) mapView.style.display = 'block';
+        if (searchResultsContainer) searchResultsContainer.innerHTML = '';
+        if (searchCount) searchCount.textContent = '';
     });
 
     // ═══════════════════════════════════════════
@@ -1022,9 +1338,49 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ═══════════════════════════════════════════
-    // NOTIFICATIONS
+    // NOTIFICATIONS PANEL
     // ═══════════════════════════════════════════
-    document.getElementById('btn-notifications')?.addEventListener('click', () => navigateToTab('swaps'));
+    document.getElementById('btn-notifications')?.addEventListener('click', () => {
+        const panel = document.getElementById('notification-panel');
+        if (panel) {
+            const isVisible = panel.classList.contains('active');
+            if (isVisible) {
+                panel.classList.remove('active');
+            } else {
+                panel.classList.add('active');
+                // Clear badge
+                const badge = document.getElementById('notif-badge');
+                if (badge) badge.style.display = 'none';
+                // Mark items as read visually
+                panel.querySelectorAll('.notif-item.notif-unread').forEach(item => {
+                    item.classList.remove('notif-unread');
+                });
+            }
+        } else {
+            navigateToTab('swaps');
+        }
+    });
+
+    // Close notification panel when clicking outside
+    document.addEventListener('click', (e) => {
+        const panel = document.getElementById('notification-panel');
+        const btn = document.getElementById('btn-notifications');
+        if (panel && panel.classList.contains('active') && !panel.contains(e.target) && !btn.contains(e.target)) {
+            panel.classList.remove('active');
+        }
+    });
+
+    // Notification item clicks
+    document.querySelectorAll('.notif-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const panel = document.getElementById('notification-panel');
+            if (panel) panel.classList.remove('active');
+            const action = item.dataset.action;
+            if (action === 'swaps') navigateToTab('swaps');
+            else if (action === 'profile') navigateToTab('profile');
+            else if (action === 'home') navigateToTab('home');
+        });
+    });
 
     // ═══════════════════════════════════════════
     // MAP PIN INTERACTIONS
@@ -1038,6 +1394,115 @@ document.addEventListener('DOMContentLoaded', () => {
             pin.style.borderColor = 'var(--primary)';
             pin.style.transform = 'scale(1.3)';
         });
+    });
+
+    // ═══════════════════════════════════════════
+    // EDIT PROFILE
+    // ═══════════════════════════════════════════
+    document.getElementById('btn-edit-profile')?.addEventListener('click', () => {
+        // Navigate to profile setup screen for editing
+        document.getElementById('setup-bio').value = state.user.bio || '';
+        document.getElementById('setup-location').value = state.user.location || '';
+        document.querySelector('#screen-profile-setup .screen-title').textContent = 'Edit Profile';
+        document.querySelector('#screen-profile-setup .step-indicator').textContent = '';
+        showScreen('profile-setup');
+    });
+
+    // ═══════════════════════════════════════════
+    // NOTIFICATION PREFERENCES MODAL
+    // ═══════════════════════════════════════════
+    const notifPrefsModal = document.getElementById('notif-prefs-modal');
+    document.getElementById('btn-profile-notifications')?.addEventListener('click', () => {
+        if (notifPrefsModal) {
+            // Sync toggles with state
+            const prefs = state.settings.notifications;
+            document.querySelectorAll('.notif-toggle').forEach(toggle => {
+                const key = toggle.dataset.key;
+                if (key && prefs[key] !== undefined) toggle.checked = prefs[key];
+            });
+            notifPrefsModal.style.display = 'flex';
+        }
+    });
+    document.getElementById('close-notif-prefs')?.addEventListener('click', () => {
+        if (notifPrefsModal) notifPrefsModal.style.display = 'none';
+    });
+    notifPrefsModal?.addEventListener('click', (e) => {
+        if (e.target === notifPrefsModal) notifPrefsModal.style.display = 'none';
+    });
+    document.getElementById('btn-save-notif-prefs')?.addEventListener('click', () => {
+        document.querySelectorAll('.notif-toggle').forEach(toggle => {
+            const key = toggle.dataset.key;
+            if (key) state.settings.notifications[key] = toggle.checked;
+        });
+        saveState();
+        if (notifPrefsModal) notifPrefsModal.style.display = 'none';
+        showToast('Notification preferences saved! 🔔', 'success');
+    });
+
+    // ═══════════════════════════════════════════
+    // COMMUNITY GUIDELINES MODAL
+    // ═══════════════════════════════════════════
+    const guidelinesModal = document.getElementById('guidelines-modal');
+    document.getElementById('btn-community-guidelines')?.addEventListener('click', () => {
+        if (guidelinesModal) guidelinesModal.style.display = 'flex';
+    });
+    document.getElementById('close-guidelines')?.addEventListener('click', () => {
+        if (guidelinesModal) guidelinesModal.style.display = 'none';
+    });
+    guidelinesModal?.addEventListener('click', (e) => {
+        if (e.target === guidelinesModal) guidelinesModal.style.display = 'none';
+    });
+
+    // ═══════════════════════════════════════════
+    // REPORT ISSUE MODAL
+    // ═══════════════════════════════════════════
+    const reportModal = document.getElementById('report-modal');
+    document.getElementById('btn-report-issue')?.addEventListener('click', () => {
+        if (reportModal) reportModal.style.display = 'flex';
+    });
+    document.getElementById('close-report-modal')?.addEventListener('click', () => {
+        if (reportModal) reportModal.style.display = 'none';
+    });
+    reportModal?.addEventListener('click', (e) => {
+        if (e.target === reportModal) reportModal.style.display = 'none';
+    });
+    document.getElementById('btn-submit-report')?.addEventListener('click', () => {
+        const issueType = document.getElementById('report-type')?.value;
+        const description = document.getElementById('report-description')?.value;
+        if (!description || description.trim().length < 10) {
+            showToast('Please provide a description (at least 10 characters).', 'error');
+            return;
+        }
+        // Save report to localStorage
+        const reports = Storage.get('reports', []);
+        reports.push({ type: issueType, description: description.trim(), timestamp: Date.now() });
+        Storage.set('reports', reports);
+        // Reset form
+        if (document.getElementById('report-description')) document.getElementById('report-description').value = '';
+        if (document.getElementById('report-type')) document.getElementById('report-type').selectedIndex = 0;
+        if (reportModal) reportModal.style.display = 'none';
+        showToast('Report submitted! We\'ll review it shortly. 📋', 'success');
+    });
+
+    // ═══════════════════════════════════════════
+    // MESSAGE SWAP
+    // ═══════════════════════════════════════════
+    document.getElementById('btn-message-swap')?.addEventListener('click', () => {
+        navigateToTab('collaborate');
+        showToast('Opening collaboration session...', 'info');
+    });
+
+    // ═══════════════════════════════════════════
+    // FILTER TOGGLE
+    // ═══════════════════════════════════════════
+    document.getElementById('btn-filter-toggle')?.addEventListener('click', () => {
+        const filterControls = document.querySelector('.filter-controls');
+        const filterPills = document.getElementById('filter-pills');
+        if (filterControls) {
+            const isHidden = filterControls.style.display === 'none';
+            filterControls.style.display = isHidden ? 'flex' : 'none';
+            if (filterPills) filterPills.style.display = isHidden ? 'flex' : 'none';
+        }
     });
 
     // ═══════════════════════════════════════════
@@ -1074,13 +1539,63 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ═══════════════════════════════════════════
-    // MICRO-INTERACTIONS
+    // MICRO-INTERACTIONS — Ripple Effect
     // ═══════════════════════════════════════════
-    document.querySelectorAll('.btn-primary, .btn-secondary, .btn-outline, .btn-social').forEach(btn => {
-        btn.addEventListener('mousedown', () => { btn.style.transform = 'scale(0.96)'; });
+    document.querySelectorAll('.btn-primary, .btn-secondary, .btn-outline, .btn-social, .btn-match-finder').forEach(btn => {
+        btn.addEventListener('mousedown', (e) => {
+            btn.style.transform = 'scale(0.96)';
+            // Ripple effect
+            const ripple = document.createElement('span');
+            ripple.className = 'btn-ripple';
+            const rect = btn.getBoundingClientRect();
+            ripple.style.left = (e.clientX - rect.left) + 'px';
+            ripple.style.top = (e.clientY - rect.top) + 'px';
+            btn.style.position = 'relative';
+            btn.style.overflow = 'hidden';
+            btn.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
         btn.addEventListener('mouseup', () => { btn.style.transform = ''; });
         btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
     });
+
+    // ═══════════════════════════════════════════
+    // ANIMATED STAT COUNTERS
+    // ═══════════════════════════════════════════
+    function animateCounter(el, target) {
+        if (!el || el.dataset.animated === 'true') return;
+        el.dataset.animated = 'true';
+        const duration = 800;
+        const start = performance.now();
+        const from = 0;
+        function tick(now) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(from + (target - from) * ease);
+            if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+    }
+
+    // Observe profile tab for stat counter animation
+    const profileTab = document.getElementById('tab-profile');
+    if (profileTab && 'MutationObserver' in window) {
+        const profileObserver = new MutationObserver(() => {
+            if (profileTab.classList.contains('active')) {
+                animateCounter(document.getElementById('stat-swaps'), state.user.swapsDone);
+                animateCounter(document.getElementById('stat-taught'), state.user.skillsTaught);
+                animateCounter(document.getElementById('stat-learned'), state.user.skillsLearned);
+            } else {
+                // Reset for next animation
+                ['stat-swaps', 'stat-taught', 'stat-learned'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.dataset.animated = 'false';
+                });
+            }
+        });
+        profileObserver.observe(profileTab, { attributes: true, attributeFilter: ['class'] });
+    }
 
     // ═══════════════════════════════════════════
     // PAGE VISIBILITY — pause animations
@@ -1127,22 +1642,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ═══════════════════════════════════════════
-    // INTERSECTION OBSERVER — Card animations
+    // INTERSECTION OBSERVER — Staggered card animations
     // ═══════════════════════════════════════════
     if ('IntersectionObserver' in window) {
+        let cardIndex = 0;
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+                    const delay = (cardIndex % 6) * 100;
+                    cardIndex++;
+                    setTimeout(() => {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, delay);
+                    observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
         document.querySelectorAll('.match-card, .swap-card, .profile-skill-item, .review-card').forEach(card => {
             card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            card.style.transform = 'translateY(24px)';
+            card.style.transition = 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
             observer.observe(card);
         });
     }
@@ -1151,13 +1672,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // SESSION TIMER (Collaborate tab)
     // ═══════════════════════════════════════════
     let sessionSeconds = 754; // 12:34
-    setInterval(() => {
-        sessionSeconds++;
-        const mins = Math.floor(sessionSeconds / 60);
-        const secs = sessionSeconds % 60;
-        const timerEl = document.getElementById('session-time');
-        if (timerEl) timerEl.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    }, 1000);
+    function startSessionTimer() {
+        if (sessionTimerId) return;
+        sessionTimerId = setInterval(() => {
+            sessionSeconds++;
+            const mins = Math.floor(sessionSeconds / 60);
+            const secs = sessionSeconds % 60;
+            const timerEl = document.getElementById('session-time');
+            if (timerEl) timerEl.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }, 1000);
+    }
+    function stopSessionTimer() {
+        if (sessionTimerId) { clearInterval(sessionTimerId); sessionTimerId = null; }
+    }
 
     // ═══════════════════════════════════════════
     // EASTER EGG
