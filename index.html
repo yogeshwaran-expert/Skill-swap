@@ -220,11 +220,12 @@
             <div class="profile-setup-form">
                 <div class="photo-upload-area">
                     <div class="photo-placeholder" id="profile-photo-preview">
-                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0vTl-ZT49a-ZH115FiYOjys9ynOWzT_yZTbDMVD0aZ2awDCC5K5yLjO8rmWFKX7zkqJTec89XNfUksRxrhMGuDwIYkuUtOYio45sUiJFhfkun5zarRwEgL5lT8pkbEh8cLnbzHoZk_mjsW39soWXuJzz2F6cCpUsBARK2v0PUv1Wic6sNSguALjWVAElw1AZQudRGpy5bVyo0sFdIBYmySXVcsrvLQcAprYlW3yyb6g6yINcKQutD5mEJBUmip0ds2Kwa_9cXcoM" alt="Profile photo"/>
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0vTl-ZT49a-ZH115FiYOjys9ynOWzT_yZTbDMVD0aZ2awDCC5K5yLjO8rmWFKX7zkqJTec89XNfUksRxrhMGuDwIYkuUtOYio45sUiJFhfkun5zarRwEgL5lT8pkbEh8cLnbzHoZk_mjsW39soWXuJzz2F6cCpUsBARK2v0PUv1Wic6sNSguALjWVAElw1AZQudRGpy5bVyo0sFdIBYmySXVcsrvLQcAprYlW3yyb6g6yINcKQutD5mEJBUmip0ds2Kwa_9cXcoM" alt="Profile photo" loading="lazy"/>
                     </div>
                     <button class="btn-photo-edit" aria-label="Change photo">
                         <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">photo_camera</span>
                     </button>
+                    <input type="file" id="photo-file-input" accept="image/*" style="display:none;"/>
                 </div>
 
                 <div class="form-group">
@@ -340,6 +341,53 @@
                     <span class="material-symbols-outlined">notifications</span>
                     <span class="notification-badge" id="notif-badge">3</span>
                 </button>
+                <!-- Notification Panel -->
+                <div class="notification-panel" id="notification-panel">
+                    <div class="notif-header">
+                        <h3>Notifications</h3>
+                        <button class="btn-icon-sm" id="notif-mark-read" aria-label="Mark all read">
+                            <span class="material-symbols-outlined">done_all</span>
+                        </button>
+                    </div>
+                    <div class="notif-list">
+                        <div class="notif-item notif-unread" data-action="swaps">
+                            <div class="notif-icon notif-icon-swap">
+                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">handshake</span>
+                            </div>
+                            <div class="notif-content">
+                                <p class="notif-text"><strong>Alex</strong> sent you a swap request for <strong>Guitar ↔ Design</strong></p>
+                                <span class="notif-time">2 min ago</span>
+                            </div>
+                        </div>
+                        <div class="notif-item notif-unread" data-action="swaps">
+                            <div class="notif-icon notif-icon-match">
+                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                            </div>
+                            <div class="notif-content">
+                                <p class="notif-text"><strong>New match!</strong> Maya is a 92% match for Photography</p>
+                                <span class="notif-time">15 min ago</span>
+                            </div>
+                        </div>
+                        <div class="notif-item" data-action="profile">
+                            <div class="notif-icon notif-icon-review">
+                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                            </div>
+                            <div class="notif-content">
+                                <p class="notif-text"><strong>Alex</strong> left you a 5-star review!</p>
+                                <span class="notif-time">1 hour ago</span>
+                            </div>
+                        </div>
+                        <div class="notif-item" data-action="home">
+                            <div class="notif-icon notif-icon-system">
+                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">tips_and_updates</span>
+                            </div>
+                            <div class="notif-content">
+                                <p class="notif-text">Welcome to SkillSwap! Complete your profile to find matches.</p>
+                                <span class="notif-time">2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -642,6 +690,10 @@
                         The Coffee Bean
                     </div>
                 </div>
+
+                <!-- Search Results -->
+                <p class="search-result-count" id="search-result-count"></p>
+                <div class="search-results-grid" id="search-results-container"></div>
             </div>
 
             <!-- ===== SWAPS TAB ===== -->
@@ -1174,9 +1226,155 @@
     </div>
 
     <!-- ============================================ -->
+    <!-- NOTIFICATION PREFERENCES MODAL                -->
+    <!-- ============================================ -->
+    <div class="modal-overlay" id="notif-prefs-modal" style="display:none;">
+        <div class="modal-card notif-prefs-card">
+            <button class="modal-close" id="close-notif-prefs" aria-label="Close">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h3 class="modal-title"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; color: var(--primary);">notifications</span> Notification Preferences</h3>
+            <div class="notif-prefs-list">
+                <div class="notif-pref-item">
+                    <div class="notif-pref-info">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">handshake</span>
+                        <div><h4>Swap Requests</h4><p>When someone sends you a swap request</p></div>
+                    </div>
+                    <label class="toggle-switch"><input type="checkbox" class="notif-toggle" data-key="swapRequests" checked/><span class="toggle-slider"></span></label>
+                </div>
+                <div class="notif-pref-item">
+                    <div class="notif-pref-info">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                        <div><h4>New Matches</h4><p>When a new skill match is found nearby</p></div>
+                    </div>
+                    <label class="toggle-switch"><input type="checkbox" class="notif-toggle" data-key="newMatches" checked/><span class="toggle-slider"></span></label>
+                </div>
+                <div class="notif-pref-item">
+                    <div class="notif-pref-info">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat</span>
+                        <div><h4>Messages</h4><p>When you receive a new message</p></div>
+                    </div>
+                    <label class="toggle-switch"><input type="checkbox" class="notif-toggle" data-key="messages" checked/><span class="toggle-slider"></span></label>
+                </div>
+                <div class="notif-pref-item">
+                    <div class="notif-pref-info">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <div><h4>Reviews</h4><p>When someone leaves you a review</p></div>
+                    </div>
+                    <label class="toggle-switch"><input type="checkbox" class="notif-toggle" data-key="reviews" checked/><span class="toggle-slider"></span></label>
+                </div>
+                <div class="notif-pref-item">
+                    <div class="notif-pref-info">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">tips_and_updates</span>
+                        <div><h4>System Updates</h4><p>App updates, tips, and announcements</p></div>
+                    </div>
+                    <label class="toggle-switch"><input type="checkbox" class="notif-toggle" data-key="systemUpdates" checked/><span class="toggle-slider"></span></label>
+                </div>
+            </div>
+            <button class="btn-primary btn-lg btn-full" id="btn-save-notif-prefs">
+                <span>Save Preferences</span>
+                <span class="material-symbols-outlined">check</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- COMMUNITY GUIDELINES MODAL                    -->
+    <!-- ============================================ -->
+    <div class="modal-overlay" id="guidelines-modal" style="display:none;">
+        <div class="modal-card guidelines-card">
+            <button class="modal-close" id="close-guidelines" aria-label="Close">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h3 class="modal-title"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; color: var(--primary);">gavel</span> Community Guidelines</h3>
+            <div class="guidelines-list">
+                <div class="guideline-item">
+                    <div class="guideline-icon" style="background: linear-gradient(135deg, var(--primary), var(--primary-container));">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">diversity_3</span>
+                    </div>
+                    <div>
+                        <h4>Respect Everyone</h4>
+                        <p>Treat all members with kindness and respect regardless of background, skill level, or experience. Discrimination or harassment of any kind is not tolerated.</p>
+                    </div>
+                </div>
+                <div class="guideline-item">
+                    <div class="guideline-icon" style="background: linear-gradient(135deg, var(--secondary), var(--secondary-container));">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shield</span>
+                    </div>
+                    <div>
+                        <h4>Stay Safe</h4>
+                        <p>Always meet in public places for in-person swaps. Share your location with a trusted friend. Trust your instincts — if something feels off, it probably is.</p>
+                    </div>
+                </div>
+                <div class="guideline-item">
+                    <div class="guideline-icon" style="background: linear-gradient(135deg, var(--accent-lavender), var(--accent-lavender-light));">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">balance</span>
+                    </div>
+                    <div>
+                        <h4>Fair Exchange</h4>
+                        <p>Honor your commitments. Prepare for sessions. Put in equal effort — a swap works best when both sides contribute meaningfully.</p>
+                    </div>
+                </div>
+                <div class="guideline-item">
+                    <div class="guideline-icon" style="background: linear-gradient(135deg, var(--tertiary), var(--tertiary-container));">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">schedule</span>
+                    </div>
+                    <div>
+                        <h4>No-Shows Policy</h4>
+                        <p>Respect other people's time. If you can't make it, cancel at least 24 hours in advance. Repeated no-shows may result in account restrictions.</p>
+                    </div>
+                </div>
+                <div class="guideline-item">
+                    <div class="guideline-icon" style="background: linear-gradient(135deg, var(--accent-mint), var(--accent-mint-dim));">
+                        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">flag</span>
+                    </div>
+                    <div>
+                        <h4>Report Issues</h4>
+                        <p>If you experience any inappropriate behavior, safety concerns, or policy violations, report them immediately. All reports are reviewed within 24 hours.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- REPORT ISSUE MODAL                            -->
+    <!-- ============================================ -->
+    <div class="modal-overlay" id="report-modal" style="display:none;">
+        <div class="modal-card report-card">
+            <button class="modal-close" id="close-report-modal" aria-label="Close">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <h3 class="modal-title"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1; color: var(--error);">flag</span> Report an Issue</h3>
+            <div class="report-form">
+                <div class="form-group">
+                    <label class="form-label" for="report-type">Issue Type</label>
+                    <select class="form-select" id="report-type">
+                        <option value="bug">Bug / Technical Issue</option>
+                        <option value="safety">Safety Concern</option>
+                        <option value="user">Report a User</option>
+                        <option value="content">Inappropriate Content</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="report-description">Description</label>
+                    <textarea class="form-textarea" id="report-description" placeholder="Please describe the issue in detail..." rows="4"></textarea>
+                </div>
+                <p class="report-note"><span class="material-symbols-outlined" style="font-size: 14px;">info</span> Your report is confidential. We'll review it within 24 hours.</p>
+            </div>
+            <button class="btn-primary btn-lg btn-full" id="btn-submit-report">
+                <span>Submit Report</span>
+                <span class="material-symbols-outlined">send</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
     <!-- TOAST NOTIFICATION                            -->
     <!-- ============================================ -->
     <div class="toast" id="toast-notification">
+        <span class="material-symbols-outlined toast-icon" id="toast-icon">info</span>
         <span id="toast-message">Action completed!</span>
     </div>
 
